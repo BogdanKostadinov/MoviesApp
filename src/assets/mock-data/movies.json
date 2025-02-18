@@ -1,0 +1,39 @@
+{
+  "movies": [
+    {
+      "id": "1",
+      "title": "The Shawshank Redemption",
+      "genre": ["Drama"],
+      "releaseYear": 1994,
+      "director": "Frank Darabont"
+    },
+    {
+      "id": "2",
+      "title": "The Godfather",
+      "genre": ["Crime"],
+      "releaseYear": 1972,
+      "director": "Francis Ford Coppola"
+    },
+    {
+      "id": "3",
+      "title": "Pulp Fiction",
+      "genre": ["Crime"],
+      "releaseYear": 1994,
+      "director": "Quentin Tarantino"
+    },
+    {
+      "id": "4",
+      "title": "The Dark Knight",
+      "genre": ["Action"],
+      "releaseYear": 2008,
+      "director": "Christopher Nolan"
+    },
+    {
+      "id": "5",
+      "title": "Inception",
+      "genre": ["Sci-Fi"],
+      "releaseYear": 2010,
+      "director": "Christopher Nolan"
+    }
+  ]
+}

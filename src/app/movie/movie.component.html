@@ -1,0 +1,12 @@
+<div class="movies-container">
+  <div *ngFor="let movie of movies" class="movie-card">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ movie.title }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ movie.director }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
