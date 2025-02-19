@@ -6,10 +6,19 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MaterialModule } from './shared/modules/material.module';
 import { MovieComponent } from './movie/movie.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ToolbarComponent } from './shared/components/toolbar/toolbar.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent, MovieComponent],
-  imports: [BrowserModule, AppRoutingModule, MaterialModule, HttpClientModule],
+  declarations: [AppComponent, MovieComponent, ToolbarComponent],
+  imports: [
+    FormsModule,
+    BrowserModule,
+    AppRoutingModule,
+    MaterialModule,
+    HttpClientModule,
+  ],
+  exports: [MaterialModule],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],
 })
