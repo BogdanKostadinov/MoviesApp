@@ -9,13 +9,26 @@ import { MovieService } from '../shared/services/movie.service';
 })
 export class MovieComponent implements OnInit {
   movies: Movie[] = [];
-  listOfMovieTitles: string[] = [];
+  filteredMovies: Movie[] = [];
+  searchValue = '';
   constructor(private movieService: MovieService) {}
 
   ngOnInit(): void {
-    this.movieService.getMovies().subscribe((movies) => {
-      this.movies = movies;
-    });
-    this.listOfMovieTitles = this.movies.map((movie) => movie.title);
+    this.movieService
+      .getMovies()
+      .subscribe((movies) => (this.filteredMovies = this.movies = movies));
+  }
+
+  filterMovies() {
+    this.filteredMovies = this.searchValue
+      ? this.movies.filter((movie) =>
+          movie.title.toLowerCase().includes(this.searchValue.toLowerCase()),
+        )
+      : this.movies;
+  }
+
+  clearSearch(): void {
+    this.searchValue = '';
+    this.filteredMovies = this.movies;
   }
 }

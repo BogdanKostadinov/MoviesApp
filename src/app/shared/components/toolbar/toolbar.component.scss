@@ -1,31 +1,7 @@
-header {
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-  transition: all 250ms ease-in-out;
-  z-index: 1000;
-}
 .toolbar-row {
   padding: 0 5px;
 }
 .toolbar-title {
   padding: 0 0 0 10px;
   flex: 1;
-}
-
-.search-block {
-  width: 0%;
-  right: 0;
-  @extend header;
-  background: #fff;
-  &.active {
-    width: 100%;
-  }
-  .search-control {
-    flex: 1;
-    font-size: 1rem;
-    border: 0;
-    outline: none;
-    padding-left: 10px;
-  }
 }

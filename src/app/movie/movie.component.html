@@ -1,7 +1,20 @@
-<app-toolbar [list]="listOfMovieTitles"></app-toolbar>
+<mat-form-field class="search-bar" appearance="outline">
+  <mat-label>Search...</mat-label>
+  <mat-icon matPrefix>search</mat-icon>
+  <input matInput type="text" [(ngModel)]="searchValue" (keyup)="filterMovies()" />
+  <button
+    *ngIf="searchValue"
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="clearSearch()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
 
 <div class="movies-container">
-  <div *ngFor="let movie of movies" class="movie-card">
+  <div *ngFor="let movie of filteredMovies" class="movie-card">
     <mat-card>
       <mat-card-header>
         <mat-card-title>{{ movie.title }}</mat-card-title>
