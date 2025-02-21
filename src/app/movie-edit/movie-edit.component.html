@@ -1,0 +1,19 @@
+<div class="content-container">
+  <ng-container *ngIf="movie$ | async as movie">
+    <mat-card class="movie-card">
+      <mat-card-header>
+        <mat-card-title>{{ movie.title }}</mat-card-title>
+        <mat-card-subtitle>{{ movie.releaseYear }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          {{ movie.director }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions class="movie-card-buttons">
+        <button mat-button (click)="navigateBack()">Back</button>
+        <button mat-raised-button color="accent">Save</button>
+      </mat-card-actions>
+    </mat-card>
+  </ng-container>
+</div>

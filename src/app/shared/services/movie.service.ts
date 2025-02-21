@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Movie } from '../models/movie.model';
-import { map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
+import { Movie } from '../models/movie.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,5 +15,11 @@ export class MovieService {
     return this.http
       .get<{ movies: Movie[] }>(this.moviesUrl)
       .pipe(map((response) => response.movies));
+  }
+
+  getMovie(id: string): Observable<Movie> {
+    return this.getMovies().pipe(
+      map((movies) => movies.find((movie) => movie.id === id) as Movie),
+    );
   }
 }

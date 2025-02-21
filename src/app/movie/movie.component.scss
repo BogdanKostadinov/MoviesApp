@@ -9,7 +9,7 @@ mat-card {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  padding: 0 16px;
+  padding: 0 16px 20px;
 }
 
 .movie-card {
@@ -17,6 +17,10 @@ mat-card {
   min-width: 200px;
   flex: 1 1 calc(33.333% - 32px);
   box-sizing: border-box;
+}
+
+.movie-card-content {
+  margin-top: auto;
 }
 
 .search-bar {

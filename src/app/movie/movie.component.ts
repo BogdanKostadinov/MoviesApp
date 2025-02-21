@@ -3,6 +3,7 @@ import { Movie } from '../shared/models/movie.model';
 import { MovieService } from '../shared/services/movie.service';
 import { MatChipSelectionChange } from '@angular/material/chips';
 import { CategoryService } from '../shared/services/category.service';
+import { Router } from '@angular/router';
 
 export interface Category {
   name: string;
@@ -22,6 +23,7 @@ export class MovieComponent implements OnInit {
   constructor(
     private movieService: MovieService,
     private categoryService: CategoryService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -65,5 +67,12 @@ export class MovieComponent implements OnInit {
   clearSearch(): void {
     this.searchValue = '';
     this.applyFilters();
+  }
+
+  navigateToMovie(movieId: string): void {
+    this.router.navigate(['movies', movieId]);
+  }
+  deleteMovieRequest(movie: Movie): void {
+    console.log('Delete movie request', movie);
   }
 }
