@@ -31,36 +31,37 @@ export class MovieComponent implements OnInit {
       .getMovies()
       .subscribe((movies) => (this.filteredMovies = this.movies = movies));
   }
-
   selectChip(event: MatChipSelectionChange, category: Category): void {
     category.selected = event.selected;
     this.movieCategories = this.movieCategories.map((cat) =>
       cat.name === category.name ? category : cat,
     );
-    this.filterMoviesByCategory();
+    this.applyFilters();
   }
 
-  filterMoviesByCategory(): void {
-    this.filteredMovies =
-      this.movieCategories.filter((cat) => cat.selected).length > 0
-        ? this.movies.filter((movie) =>
-            this.movieCategories
-              .filter((cat) => cat.selected)
-              .some((cat) => movie.genre.includes(cat.name)),
-          )
-        : this.movies;
+  applyFilters(): void {
+    let filteredMovies = this.movies;
+    if (this.movieCategories.filter((cat) => cat.selected).length > 0) {
+      filteredMovies = filteredMovies.filter((movie) =>
+        this.movieCategories
+          .filter((cat) => cat.selected)
+          .some((cat) => movie.genre.includes(cat.name)),
+      );
+    }
+    if (this.searchValue) {
+      filteredMovies = filteredMovies.filter((movie) =>
+        movie.title.toLowerCase().includes(this.searchValue.toLowerCase()),
+      );
+    }
+    this.filteredMovies = filteredMovies;
   }
 
   searchMovies() {
-    this.filteredMovies = this.searchValue
-      ? this.movies.filter((movie) =>
-          movie.title.toLowerCase().includes(this.searchValue.toLowerCase()),
-        )
-      : this.movies;
+    this.applyFilters();
   }
 
   clearSearch(): void {
     this.searchValue = '';
-    this.filteredMovies = this.movies;
+    this.applyFilters();
   }
 }
