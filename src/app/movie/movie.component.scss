@@ -1,6 +1,8 @@
 mat-card {
   background-color: white;
   border: 1px solid black;
+  min-height: 200px;
+  max-height: 200px;
 }
 
 .movies-container {

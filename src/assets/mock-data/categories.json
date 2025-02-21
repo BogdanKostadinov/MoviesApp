@@ -1,0 +1,79 @@
+{
+  "category": [
+    {
+      "id": 1,
+      "name": "Action",
+      "selected": false
+    },
+    {
+      "id": 2,
+      "name": "Comedy",
+      "selected": false
+    },
+    {
+      "id": 3,
+      "name": "Drama",
+      "selected": false
+    },
+    {
+      "id": 4,
+      "name": "Horror",
+      "selected": false
+    },
+    {
+      "id": 5,
+      "name": "Sci-Fi",
+      "selected": false
+    },
+    {
+      "id": 6,
+      "name": "Adventure",
+      "selected": false
+    },
+    {
+      "id": 7,
+      "name": "Animation",
+      "selected": false
+    },
+    {
+      "id": 8,
+      "name": "Crime",
+      "selected": false
+    },
+    {
+      "id": 9,
+      "name": "Family",
+      "selected": false
+    },
+    {
+      "id": 10,
+      "name": "Fantasy",
+      "selected": false
+    },
+    {
+      "id": 11,
+      "name": "Mystery",
+      "selected": false
+    },
+    {
+      "id": 12,
+      "name": "Romance",
+      "selected": false
+    },
+    {
+      "id": 13,
+      "name": "Thriller",
+      "selected": false
+    },
+    {
+      "id": 14,
+      "name": "Western",
+      "selected": false
+    },
+    {
+      "id": 15,
+      "name": "Musical",
+      "selected": false
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Movie } from '../shared/models/movie.model';
 import { MovieService } from '../shared/services/movie.service';
 import { MatChipSelectionChange } from '@angular/material/chips';
+import { CategoryService } from '../shared/services/category.service';
 
 export interface Category {
   name: string;
@@ -16,21 +17,22 @@ export interface Category {
 export class MovieComponent implements OnInit {
   movies: Movie[] = [];
   filteredMovies: Movie[] = [];
-  movieCategories: Category[] = [
-    { name: 'Action', selected: false },
-    { name: 'Adventure', selected: false },
-    { name: 'Comedy', selected: false },
-    { name: 'Drama', selected: false },
-    { name: 'Horror', selected: false },
-  ];
+  movieCategories: Category[] = [];
   searchValue = '';
-  constructor(private movieService: MovieService) {}
+  constructor(
+    private movieService: MovieService,
+    private categoryService: CategoryService,
+  ) {}
 
   ngOnInit(): void {
     this.movieService
       .getMovies()
       .subscribe((movies) => (this.filteredMovies = this.movies = movies));
+    this.categoryService
+      .getCategories()
+      .subscribe((categories) => (this.movieCategories = categories));
   }
+
   selectChip(event: MatChipSelectionChange, category: Category): void {
     category.selected = event.selected;
     this.movieCategories = this.movieCategories.map((cat) =>
