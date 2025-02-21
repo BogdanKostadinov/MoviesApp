@@ -43,7 +43,10 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="navigateToMovie(movie.id)">
+          <button
+            mat-menu-item
+            (click)="openDialog({ action: 'edit', movie: movie })"
+          >
             <mat-icon>edit</mat-icon>
             <span>Edit</span>
           </button>

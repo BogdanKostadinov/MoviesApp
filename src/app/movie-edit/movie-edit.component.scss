@@ -1,21 +1,9 @@
-.content-container {
+.form-container {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  height: calc(100vh - 64px);
-  padding: 40px 20px 20px 20px;
-  box-sizing: border-box;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.movie-card {
-  width: 90%;
-  max-width: 400px;
-  height: 400px;
-  max-height: calc(100vh - 104px);
-  overflow: auto;
-}
-
-.movie-card-buttons {
-  margin: auto 10px 10px 10px;
-  justify-content: space-between;
+mat-form-field {
+  width: 100%;
 }

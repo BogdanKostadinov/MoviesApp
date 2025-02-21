@@ -1,19 +1,15 @@
-<div class="content-container">
-  <ng-container *ngIf="movie$ | async as movie">
-    <mat-card class="movie-card">
-      <mat-card-header>
-        <mat-card-title>{{ movie.title }}</mat-card-title>
-        <mat-card-subtitle>{{ movie.releaseYear }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>
-          {{ movie.director }}
-        </p>
-      </mat-card-content>
-      <mat-card-actions class="movie-card-buttons">
-        <button mat-button (click)="navigateBack()">Back</button>
-        <button mat-raised-button color="accent">Save</button>
-      </mat-card-actions>
-    </mat-card>
-  </ng-container>
-</div>
+<ng-container *ngIf="data.movie as movie">
+  <h2 mat-dialog-title>{{ title }}</h2>
+  <mat-dialog-content class="mat-typography">
+    <form [formGroup]="form">
+      <mat-form-field>
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" />
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions [align]="'end'">
+    <button mat-button (click)="navigateBack()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="addMovie()">Save</button>
+  </mat-dialog-actions>
+</ng-container>

@@ -1,3 +1,8 @@
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
 .toolbar-row {
   padding: 0 5px;
 }
