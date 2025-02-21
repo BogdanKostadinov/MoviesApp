@@ -42,3 +42,15 @@ testem.log
 Thumbs.db
 
 .vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore build output (DLLs, EXEs, etc.)
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
