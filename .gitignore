@@ -49,8 +49,8 @@ Thumbs.db
 
 # Ignore build output (DLLs, EXEs, etc.)
 # Ignore all bin and obj folders in the repository
-**/bin/
-**/obj/
+/MoviesAPI/MoviesAPI/bin/
+/MoviesAPI/MoviesAPI/obj/
 *.dll
 *.exe
 *.pdb
