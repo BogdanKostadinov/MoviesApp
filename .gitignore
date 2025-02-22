@@ -48,12 +48,9 @@ Thumbs.db
 *.sln.docstates
 
 # Ignore build output (DLLs, EXEs, etc.)
-bin/
-/MoviesAPI/bin/
-MoviesAPI/bin/
-obj/
-/MoviesAPI/obj/
-MoviesAPI/obj/
+# Ignore all bin and obj folders in the repository
+**/bin/
+**/obj/
 *.dll
 *.exe
 *.pdb
