@@ -49,8 +49,11 @@ Thumbs.db
 
 # Ignore build output (DLLs, EXEs, etc.)
 bin/
-MoviesAPI/obj/
+/MoviesAPI/bin/
+MoviesAPI/bin/
 obj/
+/MoviesAPI/obj/
+MoviesAPI/obj/
 *.dll
 *.exe
 *.pdb
