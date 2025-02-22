@@ -58,3 +58,5 @@ obj/
 /MoviesAPI/MoviesAPI/obj/Debug/net8.0/MoviesAPI.AssemblyInfo.cs
 /MoviesAPI/MoviesAPI/obj/Debug/net8.0/MoviesAPI.csproj.CoreCompileInputs.cache
 /MoviesAPI/MoviesAPI/obj/Debug/net8.0/MoviesAPI.sourcelink.json
+/MoviesAPI/MoviesAPI/obj/Debug/net8.0/EndpointInfo/MoviesAPI.json
+/MoviesAPI/MoviesAPI/obj/Debug/net8.0/ApiEndpoints.json

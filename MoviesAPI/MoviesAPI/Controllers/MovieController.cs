@@ -4,7 +4,7 @@ using MoviesAPI.Models;
 namespace MoviesAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("/movies")]
 public class MovieController : ControllerBase
 {
   private readonly ILogger<MovieController> _logger;
@@ -15,7 +15,7 @@ public class MovieController : ControllerBase
   }
 
   [HttpGet(Name = "GetMovies")]
-  public IEnumerable<Movie> Get()
+  public IEnumerable<Movie> GetMovies()
   {
     return [];
   }
