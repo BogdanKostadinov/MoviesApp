@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MoviesAPI.Data;
 using MoviesAPI.Models;
 
 namespace MoviesAPI.Controllers;
@@ -8,15 +9,18 @@ namespace MoviesAPI.Controllers;
 public class MovieController : ControllerBase
 {
   private readonly ILogger<MovieController> _logger;
+  private readonly DataContext _context;
 
-  public MovieController(ILogger<MovieController> logger)
+  public MovieController(ILogger<MovieController> logger, DataContext context)
   {
     _logger = logger;
+    _context = context;
   }
 
   [HttpGet(Name = "GetMovies")]
   public IEnumerable<Movie> GetMovies()
   {
-    return [];
+    var movies = _context.Movies.ToList();
+    return _context.Movies;
   }
 }

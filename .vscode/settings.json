@@ -4,5 +4,8 @@
   "eslint.validate": ["typescript", "html"],
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
+  },
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
   }
 }
