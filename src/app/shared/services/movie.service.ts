@@ -7,42 +7,35 @@ import { Movie } from '../models/movie.model';
   providedIn: 'root',
 })
 export class MovieService {
-  //TODO replace with real API URL
-  private moviesUrl = 'assets/mock-data/movies.json';
-  private testUrl = 'https://localhost:44371/WeatherForecast';
+  private url = 'https://localhost:44371';
   movies$: Observable<Movie[]> = this.getMovies();
 
-  constructor(private http: HttpClient) {
-    this.test();
-  }
+  constructor(private http: HttpClient) {}
 
   getMovies(): Observable<Movie[]> {
     return this.http
-      .get<{ movies: Movie[] }>(this.moviesUrl)
-      .pipe(map((response) => response.movies));
+      .get<Movie[]>(`${this.url}/movies`)
+      .pipe(catchError(this.handleError));
   }
 
+  // add backend endpoint
   getMovie(id: string): Observable<Movie> {
     return this.getMovies().pipe(
       map((movies) => movies.find((movie) => movie.id === id) as Movie),
     );
   }
-  //TODO: Replace the test method
-  test(): void {
-    this.http.get(this.testUrl).subscribe((data) => {
-      console.log(data);
-    });
-  }
 
+  // add backend endpoint
   addMovie(movie: Movie): Observable<Movie> {
     return this.http
       .post<Movie>(`moviesUrl`, movie)
       .pipe(catchError(this.handleError));
   }
 
+  // add backend endpoint
   updateMovie(id: string, updatedMovie: Partial<Movie>): Observable<Movie> {
     return this.http
-      .put<Movie>(`${this.moviesUrl}/${id}`, updatedMovie)
+      .put<Movie>(`${this.url}/${id}`, updatedMovie)
       .pipe(catchError(this.handleError));
   }
 
