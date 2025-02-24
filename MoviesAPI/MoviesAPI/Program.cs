@@ -14,6 +14,7 @@ builder.Services.AddCors(options =>
       });
 });
 
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
