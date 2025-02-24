@@ -5,6 +5,7 @@ using MoviesAPI.Data;
 using MoviesAPI.Data.Mock_Data;
 using MoviesAPI.DTOs.Movie;
 using MoviesAPI.Models;
+using MoviesAPI.Validation.MovieValidation;
 
 namespace MoviesAPI.Controllers;
 
@@ -46,6 +47,19 @@ public class MovieController : ControllerBase
   [HttpPost]
   public async Task<IActionResult> CreateMovieAsync([FromBody] MovieCreateDTO newMovie)
   {
+    var validator = new MovieCreateDTOValidator();
+    var validationResult = await validator.ValidateAsync(newMovie);
+
+    if (!validationResult.IsValid)
+    {
+      // Add validation errors to ModelState
+      foreach (var error in validationResult.Errors)
+      {
+        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+      }
+      return BadRequest(ModelState);
+    }
+
     try
     {
       var movie = _mapper.Map<Movie>(newMovie);

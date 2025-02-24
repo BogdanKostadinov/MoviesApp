@@ -63,8 +63,8 @@ namespace MoviesAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ReleaseYear")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("ReleaseYear")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -80,7 +80,7 @@ namespace MoviesAPI.Migrations
                             Id = new Guid("b1e29d5e-1c4b-4b8a-9b1e-1c4b4b8a9b1e"),
                             Director = "Christopher Nolan",
                             Genre = "Science Fiction",
-                            ReleaseYear = new DateTime(2010, 7, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ReleaseYear = 2010,
                             Title = "Inception"
                         },
                         new
@@ -88,7 +88,7 @@ namespace MoviesAPI.Migrations
                             Id = new Guid("c2f29d5e-2d4b-5c8a-9c2e-2d4b5c8a9c2e"),
                             Director = "Lana Wachowski, Lilly Wachowski",
                             Genre = "Action",
-                            ReleaseYear = new DateTime(1999, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ReleaseYear = 1999,
                             Title = "The Matrix"
                         });
                 });
