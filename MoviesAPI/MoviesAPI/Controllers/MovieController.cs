@@ -2,7 +2,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoviesAPI.Data;
-using MoviesAPI.Data.Mock_Data;
 using MoviesAPI.DTOs.Movie;
 using MoviesAPI.Models;
 using MoviesAPI.Validation.MovieValidation;
