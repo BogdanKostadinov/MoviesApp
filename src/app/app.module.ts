@@ -10,6 +10,7 @@ import { MovieComponent } from './movie/movie.component';
 import { ToolbarComponent } from './shared/components/toolbar/toolbar.component';
 import { MaterialModule } from './shared/modules/material.module';
 import { CategoryComponent } from './categories/category.component';
+import { SeachBarComponent } from './shared/components/search-bar/seach-bar.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { CategoryComponent } from './categories/category.component';
     ToolbarComponent,
     MovieEditComponent,
     CategoryComponent,
+    SeachBarComponent,
   ],
   imports: [
     FormsModule,

@@ -52,17 +52,9 @@ export class MovieComponent implements OnInit {
     this.filteredMovies = filteredMovies;
   }
 
-  searchMovies() {
+  onSearchValueChange(searchValue: string): void {
+    this.searchValue = searchValue;
     this.applyFilters();
-  }
-
-  clearSearch(): void {
-    this.searchValue = '';
-    this.applyFilters();
-  }
-
-  navigateToMovie(movieId: string): void {
-    this.router.navigate(['movies', movieId]);
   }
 
   openDialog(data: { action: string; movie?: Movie }): void {
@@ -76,6 +68,10 @@ export class MovieComponent implements OnInit {
         this.refreshTasksEvent.emit();
       }
     });
+  }
+
+  navigateToMovie(movieId: string): void {
+    this.router.navigate(['movies', movieId]);
   }
 
   deleteMovieRequest(movie: Movie): void {
