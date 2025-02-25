@@ -91,6 +91,6 @@ export class MovieComponent implements OnInit {
   }
 
   deleteMovieRequest(movie: Movie): void {
-    console.log('Delete movie request', movie);
+    this.movieService.deleteMovie(movie.id);
   }
 }
