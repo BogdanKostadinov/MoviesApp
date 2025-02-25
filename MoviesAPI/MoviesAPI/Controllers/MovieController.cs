@@ -46,12 +46,11 @@ public class MovieController : ControllerBase
   [HttpPost]
   public async Task<IActionResult> CreateMovieAsync([FromBody] MovieCreateDTO newMovie)
   {
-    var validator = new MovieCreateDTOValidator();
+    var validator = new MovieCreateDTOValidator(_context);
     var validationResult = await validator.ValidateAsync(newMovie);
 
     if (!validationResult.IsValid)
     {
-      // Add validation errors to ModelState
       foreach (var error in validationResult.Errors)
       {
         ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
@@ -79,7 +78,19 @@ public class MovieController : ControllerBase
   [HttpPut("{id}")]
   public async Task<IActionResult> UpdateMovieAsync(Guid id, [FromBody] MovieUpdateDTO updatedMovie)
   {
+    var validator = new MovieUpdateDTOValidator(_context);
+    var validationResult = await validator.ValidateAsync(updatedMovie);
+
     var movie = await _context.Movies.FindAsync(id);
+
+    if (!validationResult.IsValid)
+    {
+      foreach (var error in validationResult.Errors)
+      {
+        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+      }
+      return BadRequest(ModelState);
+    }
 
     if (movie is not null)
     {

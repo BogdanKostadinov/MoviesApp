@@ -5,11 +5,10 @@ using MoviesAPI.DTOs.Movie;
 
 namespace MoviesAPI.Validation.MovieValidation;
 
-public class MovieCreateDTOValidator : AbstractValidator<MovieCreateDTO>
+public class MovieUpdateDTOValidator : AbstractValidator<MovieUpdateDTO>
 {
   private readonly DataContext _context;
-
-  public MovieCreateDTOValidator(DataContext context)
+  public MovieUpdateDTOValidator(DataContext context)
   {
     _context = context;
 
