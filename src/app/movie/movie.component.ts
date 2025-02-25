@@ -34,9 +34,9 @@ export class MovieComponent implements OnInit {
     this.movieService
       .getMovies()
       .subscribe((movies) => (this.filteredMovies = this.movies = movies));
-    this.categoryService
-      .getCategories()
-      .subscribe((categories) => (this.movieCategories = categories));
+    this.categoryService.getCategories().subscribe((categories) => {
+      this.movieCategories = categories;
+    });
   }
 
   selectChip(event: MatChipSelectionChange, category: Category): void {

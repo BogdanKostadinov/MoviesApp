@@ -36,7 +36,6 @@ export class MovieService {
   }
 
   deleteMovie(id: string): void {
-    console.log('Deleting movie with id:', id);
     this.http
       .delete(`${this.url}/${id}`)
       .pipe(catchError(this.handleError))
