@@ -1,16 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { MatChipSelectionChange } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MovieEditComponent } from '../movie-edit/movie-edit.component';
+import { Category } from '../shared/models/category.model';
 import { Movie } from '../shared/models/movie.model';
-import { CategoryService } from '../shared/services/category.service';
 import { MovieService } from '../shared/services/movie.service';
-
-export interface Category {
-  name: string;
-  selected: boolean;
-}
 
 @Component({
   selector: 'app-movie',
@@ -23,9 +17,9 @@ export class MovieComponent implements OnInit {
   filteredMovies: Movie[] = [];
   movieCategories: Category[] = [];
   searchValue = '';
+
   constructor(
     private movieService: MovieService,
-    private categoryService: CategoryService,
     private router: Router,
     private dialog: MatDialog,
   ) {}
@@ -34,16 +28,10 @@ export class MovieComponent implements OnInit {
     this.movieService
       .getMovies()
       .subscribe((movies) => (this.filteredMovies = this.movies = movies));
-    this.categoryService.getCategories().subscribe((categories) => {
-      this.movieCategories = categories;
-    });
   }
 
-  selectChip(event: MatChipSelectionChange, category: Category): void {
-    category.selected = event.selected;
-    this.movieCategories = this.movieCategories.map((cat) =>
-      cat.name === category.name ? category : cat,
-    );
+  onApplyChips(categories: Category[]): void {
+    this.movieCategories = categories;
     this.applyFilters();
   }
 

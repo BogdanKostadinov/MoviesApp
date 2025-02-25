@@ -1,0 +1,12 @@
+<div class="chip-container">
+  <mat-chip-set aria-label="Movie category selection">
+    <mat-chip-option
+      *ngFor="let category of categories"
+      [value]="category.name"
+      [class.selected]="category.selected"
+      (selectionChange)="selectChip($event, category)"
+    >
+      {{ category.name }}
+    </mat-chip-option>
+  </mat-chip-set>
+</div>

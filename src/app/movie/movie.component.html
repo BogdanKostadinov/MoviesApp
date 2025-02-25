@@ -18,18 +18,7 @@
   </button>
 </mat-form-field>
 
-<div class="chip-container">
-  <mat-chip-set aria-label="Movie category selection">
-    <mat-chip-option
-      *ngFor="let category of movieCategories"
-      [value]="category.name"
-      [class.selected]="category.selected"
-      (selectionChange)="selectChip($event, category)"
-    >
-      {{ category.name }}
-    </mat-chip-option>
-  </mat-chip-set>
-</div>
+<app-category (applyChipsEvent)="onApplyChips($event)"></app-category>
 
 <div class="movies-container">
   <div *ngFor="let movie of filteredMovies" class="movie-card">

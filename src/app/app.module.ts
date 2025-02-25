@@ -9,6 +9,7 @@ import { MovieEditComponent } from './movie-edit/movie-edit.component';
 import { MovieComponent } from './movie/movie.component';
 import { ToolbarComponent } from './shared/components/toolbar/toolbar.component';
 import { MaterialModule } from './shared/modules/material.module';
+import { CategoryComponent } from './categories/category.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { MaterialModule } from './shared/modules/material.module';
     MovieComponent,
     ToolbarComponent,
     MovieEditComponent,
+    CategoryComponent,
   ],
   imports: [
     FormsModule,
