@@ -1,10 +1,18 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { MovieEditComponent } from '../movie-edit/movie-edit.component';
 import { Category } from '../shared/models/category.model';
 import { Movie } from '../shared/models/movie.model';
 import { MovieService } from '../shared/services/movie.service';
+import * as MovieActions from '../store/actions/movie.actions';
+import { AppState } from '../store/app.state';
+import {
+  selectAllMovies,
+  selectLastUpdated,
+} from '../store/selectors/movie.selectors';
 
 @Component({
   selector: 'app-movie',
@@ -18,16 +26,25 @@ export class MovieComponent implements OnInit {
   movieCategories: Category[] = [];
   searchValue = '';
 
+  movies$: Observable<Movie[]>;
+  lastUpdated$: Observable<string | null>;
+
   constructor(
     private movieService: MovieService,
     private router: Router,
     private dialog: MatDialog,
-  ) {}
+    private store: Store<AppState>,
+  ) {
+    this.movies$ = this.store.select(selectAllMovies);
+    this.lastUpdated$ = this.store.select(selectLastUpdated);
+  }
 
   ngOnInit(): void {
-    this.movieService
-      .getMovies()
-      .subscribe((movies) => (this.filteredMovies = this.movies = movies));
+    this.store.dispatch(MovieActions.loadMovies());
+    this.movies$.subscribe((movies) => {
+      this.filteredMovies = this.movies = movies;
+      this.applyFilters();
+    });
   }
 
   onApplyChips(categories: Category[]): void {
@@ -75,6 +92,8 @@ export class MovieComponent implements OnInit {
   }
 
   deleteMovieRequest(movie: Movie): void {
-    this.movieService.deleteMovie(movie.id);
+    this.movieService.deleteMovie(movie.id).subscribe(() => {
+      this.store.dispatch(MovieActions.deleteMovie({ movieId: movie.id }));
+    });
   }
 }

@@ -35,11 +35,10 @@ export class MovieService {
       .pipe(catchError(this.handleError));
   }
 
-  deleteMovie(id: string): void {
-    this.http
-      .delete(`${this.url}/${id}`)
-      .pipe(catchError(this.handleError))
-      .subscribe();
+  deleteMovie(id: string): Observable<void> {
+    return this.http
+      .delete<void>(`${this.url}/${id}`)
+      .pipe(catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {

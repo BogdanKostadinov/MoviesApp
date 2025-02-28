@@ -1,11 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Category } from '../shared/models/category.model';
 import { Movie } from '../shared/models/movie.model';
 import { CategoryService } from '../shared/services/category.service';
 import { MovieService } from '../shared/services/movie.service';
+import * as MovieActions from '../store/actions/movie.actions';
 
 @Component({
   selector: 'app-movie-edit',
@@ -21,6 +23,7 @@ export class MovieEditComponent implements OnInit {
     private movieService: MovieService,
     private categoryService: CategoryService,
     private dialogRef: MatDialogRef<MovieEditComponent>,
+    private store: Store,
     public fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA)
     public data: { action: 'add' | 'edit'; movie?: Movie },
@@ -53,6 +56,9 @@ export class MovieEditComponent implements OnInit {
       this.movieService
         .updateMovie(movieToUpdate.id as string, movieToUpdate)
         .subscribe(() => {
+          this.store.dispatch(
+            MovieActions.updateMovie({ movie: movieToUpdate }),
+          );
           this.dialogRef.close({ success: true, action: 'edit' });
         });
     }
