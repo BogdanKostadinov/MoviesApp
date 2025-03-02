@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { MovieEditComponent } from '../movie-edit/movie-edit.component';
 import { Category } from '../shared/models/category.model';
 import { Movie } from '../shared/models/movie.model';
-import { MovieService } from '../shared/services/movie.service';
 import * as MovieActions from '../store/actions/movie.actions';
 import { AppState } from '../store/app.state';
 import {
@@ -29,7 +28,6 @@ export class MovieComponent implements OnInit {
   lastUpdated$: Observable<string | null>;
 
   constructor(
-    private movieService: MovieService,
     private router: Router,
     private dialog: MatDialog,
     private store: Store<AppState>,
@@ -87,8 +85,6 @@ export class MovieComponent implements OnInit {
   }
 
   deleteMovieRequest(movie: Movie): void {
-    this.movieService.deleteMovie(movie.id).subscribe(() => {
-      this.store.dispatch(MovieActions.deleteMovie({ movieId: movie.id }));
-    });
+    this.store.dispatch(MovieActions.deleteMovie({ movieId: movie.id }));
   }
 }

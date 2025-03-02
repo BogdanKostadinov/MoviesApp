@@ -4,9 +4,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Category } from '../shared/models/category.model';
-import { Movie } from '../shared/models/movie.model';
+import { Movie, MovieToAdd } from '../shared/models/movie.model';
 import { CategoryService } from '../shared/services/category.service';
-import { MovieService } from '../shared/services/movie.service';
 import * as MovieActions from '../store/actions/movie.actions';
 
 @Component({
@@ -20,7 +19,6 @@ export class MovieEditComponent implements OnInit {
   categories$: Observable<Category[]>;
 
   constructor(
-    private movieService: MovieService,
     private categoryService: CategoryService,
     private dialogRef: MatDialogRef<MovieEditComponent>,
     private store: Store,
@@ -38,32 +36,29 @@ export class MovieEditComponent implements OnInit {
   initializeForm(): void {
     this.form = this.fb.group({
       title: [this.data.movie?.title || '', Validators.required],
+      genre: [this.data.movie?.genre || '', Validators.required],
+      releaseYear: [this.data.movie?.releaseYear || '', Validators.required],
+      director: [this.data.movie?.director || '', Validators.required],
     });
   }
-
-  addMovie(): void {
+  saveMovie(action: string): void {
     if (this.form.invalid) return;
-    const movieToSave: Partial<Movie> = this.form.value;
-    if (this.data.action === 'add') {
-      this.movieService.addMovie(movieToSave as Movie).subscribe(() => {
-        this.dialogRef.close({ success: true, action: 'add' });
-      });
-    } else if (this.data.action === 'edit' && this.data.movie) {
-      const movieToUpdate: Movie = {
-        ...this.data.movie,
-        ...movieToSave,
-      } as Movie;
-      this.movieService
-        .updateMovie(movieToUpdate.id as string, movieToUpdate)
-        .subscribe(() => {
-          this.store.dispatch(
-            MovieActions.updateMovie({
-              id: this.data.movie?.id || '',
-              movie: movieToUpdate,
-            }),
-          );
-          this.dialogRef.close({ success: true, action: 'edit' });
-        });
+    const movieToSave: MovieToAdd = this.form.value;
+    if (action === 'add') {
+      this.store.dispatch(MovieActions.addMovie({ movie: movieToSave }));
+      this.dialogRef.close({ success: true, action: this.data.action });
+    } else {
+      this.store.dispatch(
+        MovieActions.updateMovie({
+          id: this.data.movie!.id,
+          movie: {
+            ...this.data.movie,
+            ...movieToSave,
+            id: this.data.movie!.id,
+          },
+        }),
+      );
+      this.dialogRef.close({ success: true, action: this.data.action });
     }
   }
 

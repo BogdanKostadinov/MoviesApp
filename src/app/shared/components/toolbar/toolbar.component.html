@@ -1,12 +1,11 @@
-<mat-toolbar
-  color="primary"
-  class="mat-elevation-z4"
-  [class.hidden]="toggleSearch"
->
+<mat-toolbar color="primary" class="mat-elevation-z4">
   <mat-toolbar-row class="toolbar-row">
     <div class="toolbar-title">
       <div class="mat-title">Movies</div>
     </div>
+    <span class="spacer"></span>
+    <button mat-mini-fab color="accent" (click)="openAddMovieDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
   </mat-toolbar-row>
 </mat-toolbar>
-

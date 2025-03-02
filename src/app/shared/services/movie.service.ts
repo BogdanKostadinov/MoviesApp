@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
-import { Movie } from '../models/movie.model';
+import { Movie, MovieToAdd } from '../models/movie.model';
 
 @Injectable({
   providedIn: 'root',
@@ -23,13 +23,13 @@ export class MovieService {
       .pipe(catchError(this.handleError));
   }
 
-  addMovie(movie: Movie): Observable<Movie> {
+  addMovie(movie: MovieToAdd): Observable<Movie> {
     return this.http
       .post<Movie>(`${this.url}`, movie)
       .pipe(catchError(this.handleError));
   }
 
-  updateMovie(id: string, updatedMovie: Partial<Movie>): Observable<Movie> {
+  updateMovie(id: string, updatedMovie: Movie): Observable<Movie> {
     return this.http
       .put<Movie>(`${this.url}/${id}`, updatedMovie)
       .pipe(catchError(this.handleError));

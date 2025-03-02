@@ -4,9 +4,14 @@ mat-toolbar {
   z-index: 1000;
 }
 .toolbar-row {
+  display: flex;
+  justify-content: space-between;
   padding: 0 5px;
 }
 .toolbar-title {
   padding: 0 0 0 10px;
   flex: 1;
+}
+.spacer {
+  flex: 1 1 auto;
 }

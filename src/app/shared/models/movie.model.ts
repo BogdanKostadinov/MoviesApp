@@ -5,3 +5,7 @@ export interface Movie {
   releaseYear: number;
   genre: string[];
 }
+
+export interface MovieToAdd extends Omit<Movie, 'id'> {
+
+}

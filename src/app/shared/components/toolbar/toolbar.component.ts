@@ -1,4 +1,6 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MovieEditComponent } from '../../../movie-edit/movie-edit.component';
 
 @Component({
   selector: 'app-toolbar',
@@ -6,19 +8,13 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
   styleUrl: './toolbar.component.scss',
 })
 export class ToolbarComponent {
-  @Input() list: string[] = [];
+  constructor(private dialog: MatDialog) {}
 
-  @ViewChild('searchbar') searchbar!: ElementRef;
-  searchText = '';
-
-  toggleSearch = false;
-
-  openSearch() {
-    this.toggleSearch = true;
-    this.searchbar.nativeElement.focus();
-  }
-  searchClose() {
-    this.searchText = '';
-    this.toggleSearch = false;
+  openAddMovieDialog(): void {
+    const dialogRef = this.dialog.open(MovieEditComponent, {
+      width: '400px',
+      data: { action: 'add' },
+    });
+    dialogRef.afterClosed().subscribe();
   }
 }

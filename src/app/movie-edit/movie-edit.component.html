@@ -1,15 +1,25 @@
-<ng-container *ngIf="data.movie as movie">
-  <h2 mat-dialog-title>{{ title }}</h2>
-  <mat-dialog-content class="mat-typography">
-    <form [formGroup]="form">
-      <mat-form-field>
-        <mat-label>Title</mat-label>
-        <input matInput formControlName="title" />
-      </mat-form-field>
-    </form>
-  </mat-dialog-content>
-  <mat-dialog-actions [align]="'end'">
-    <button mat-button (click)="navigateBack()">Cancel</button>
-    <button mat-raised-button color="primary" (click)="addMovie()">Save</button>
-  </mat-dialog-actions>
-</ng-container>
+<h2 mat-dialog-title>{{ title }}</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Genre</mat-label>
+      <input matInput formControlName="genre" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Release year</mat-label>
+      <input matInput formControlName="releaseYear" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Director</mat-label>
+      <input matInput formControlName="director" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions [align]="'end'">
+  <button mat-button (click)="navigateBack()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="saveMovie(data.action)">Save</button>
+</mat-dialog-actions>

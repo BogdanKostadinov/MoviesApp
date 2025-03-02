@@ -16,14 +16,29 @@ const _movieReducer = createReducer(
     movies: movies,
     lastUpdated: new Date().toISOString(),
   })),
-  on(Actions.updateMovie, (state, { movie }) => ({
+  on(Actions.loadMoviesFailure, (state, { error }) => ({
+    ...state,
+    error: error,
+    lastUpdated: new Date().toISOString(),
+  })),
+  on(Actions.updateMovieSuccess, (state, { movie }) => ({
     ...state,
     movies: state.movies.map((m) => (m.id === movie.id ? movie : m)),
     lastUpdated: new Date().toISOString(),
   })),
-  on(Actions.deleteMovie, (state, { movieId }) => ({
+  on(Actions.updateMovieFailure, (state, { error }) => ({
+    ...state,
+    error: error,
+    lastUpdated: new Date().toISOString(),
+  })),
+  on(Actions.deleteMovieSuccess, (state, { movieId }) => ({
     ...state,
     movies: state.movies.filter((m) => m.id !== movieId),
+    lastUpdated: new Date().toISOString(),
+  })),
+  on(Actions.deleteMovieFailure, (state, { error }) => ({
+    ...state,
+    error: error,
     lastUpdated: new Date().toISOString(),
   })),
 );
