@@ -17,6 +17,7 @@ export class MovieEditComponent implements OnInit {
   title!: string;
   form!: FormGroup;
   categories$: Observable<Category[]>;
+  currentYear = new Date().getFullYear() + 1;
 
   constructor(
     private categoryService: CategoryService,
@@ -35,18 +36,47 @@ export class MovieEditComponent implements OnInit {
 
   initializeForm(): void {
     this.form = this.fb.group({
-      title: [this.data.movie?.title || '', Validators.required],
-      genre: [this.data.movie?.genre || '', Validators.required],
-      releaseYear: [this.data.movie?.releaseYear || '', Validators.required],
-      director: [this.data.movie?.director || '', Validators.required],
+      title: [
+        this.data.movie?.title || '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(100),
+        ],
+      ],
+      genre: [
+        this.data.movie?.genre || '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(100),
+        ],
+      ],
+      releaseYear: [
+        this.data.movie?.releaseYear || '',
+        [
+          Validators.required,
+          Validators.min(1888),
+          Validators.max(this.currentYear + 1),
+        ],
+      ],
+      director: [
+        this.data.movie?.director || '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(100),
+        ],
+      ],
     });
   }
   saveMovie(action: string): void {
-    if (this.form.invalid) return;
+    if (!this.validateForm()) return;
+
     const movieToSave: MovieToAdd = this.form.value;
+
     if (action === 'add') {
       this.store.dispatch(MovieActions.addMovie({ movie: movieToSave }));
-      this.dialogRef.close({ success: true, action: this.data.action });
     } else {
       this.store.dispatch(
         MovieActions.updateMovie({
@@ -58,8 +88,24 @@ export class MovieEditComponent implements OnInit {
           },
         }),
       );
-      this.dialogRef.close({ success: true, action: this.data.action });
     }
+
+    this.dialogRef.close({ success: true, action: this.data.action });
+  }
+
+  validateForm(): boolean {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.form.updateValueAndValidity();
+    }
+    return this.form.valid;
+  }
+
+  showError(controlName: string, ...errors: string[]): boolean {
+    const control = this.form.get(controlName);
+    if (!control) return false;
+
+    return errors.some((error) => control.hasError(error));
   }
 
   navigateBack(): void {

@@ -1,25 +1,58 @@
 <h2 mat-dialog-title>{{ title }}</h2>
 <mat-dialog-content class="mat-typography">
   <form [formGroup]="form">
+    <!-- Title -->
     <mat-form-field>
       <mat-label>Title</mat-label>
       <input matInput formControlName="title" />
+      <mat-error *ngIf="showError('title', 'required')"
+        >Title is required</mat-error
+      >
+      <mat-error *ngIf="showError('title', 'minlength', 'maxlength')">
+        Title must be between 1-100 characters
+      </mat-error>
     </mat-form-field>
+
+    <!-- Genre -->
     <mat-form-field>
       <mat-label>Genre</mat-label>
       <input matInput formControlName="genre" />
+      <mat-error *ngIf="showError('genre', 'required')"
+        >Genre is required</mat-error
+      >
+      <mat-error *ngIf="showError('genre', 'minlength', 'maxlength')">
+        Genre must be between 1-100 characters
+      </mat-error>
     </mat-form-field>
+
+    <!-- Release Year -->
     <mat-form-field>
       <mat-label>Release year</mat-label>
       <input matInput formControlName="releaseYear" />
+      <mat-error *ngIf="showError('releaseYear', 'required')"
+        >Release year is required</mat-error
+      >
+      <mat-error *ngIf="showError('releaseYear', 'min', 'max')">
+        Release year must be between 1888 and {{ currentYear }}
+      </mat-error>
     </mat-form-field>
+
+    <!-- Director -->
     <mat-form-field>
       <mat-label>Director</mat-label>
       <input matInput formControlName="director" />
+      <mat-error *ngIf="showError('director', 'required')"
+        >Director is required</mat-error
+      >
+      <mat-error *ngIf="showError('director', 'minlength', 'maxlength')">
+        Director must be between 1-100 characters
+      </mat-error>
     </mat-form-field>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions [align]="'end'">
   <button mat-button (click)="navigateBack()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="saveMovie(data.action)">Save</button>
+  <button mat-raised-button color="primary" (click)="saveMovie(data.action)">
+    Save
+  </button>
 </mat-dialog-actions>
