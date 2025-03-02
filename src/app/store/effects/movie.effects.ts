@@ -18,6 +18,43 @@ export class MovieEffects {
     ),
   );
 
+  addMovie$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.addMovie),
+      mergeMap((action) =>
+        this.movieService
+          .addMovie(action.movie)
+          .pipe(map((movie) => MovieActions.addMovie({ movie }))),
+      ),
+    ),
+  );
+
+  updateMovie$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.updateMovie),
+      mergeMap((action) =>
+        this.movieService
+          .updateMovie(action.id, action.movie)
+          .pipe(
+            map((movie) => MovieActions.updateMovie({ id: movie.id, movie })),
+          ),
+      ),
+    ),
+  );
+
+  deleteMovie$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.deleteMovie),
+      mergeMap((action) =>
+        this.movieService
+          .deleteMovie(action.movieId)
+          .pipe(
+            map(() => MovieActions.deleteMovie({ movieId: action.movieId })),
+          ),
+      ),
+    ),
+  );
+
   constructor(
     private actions$: Actions,
     private store: Store,

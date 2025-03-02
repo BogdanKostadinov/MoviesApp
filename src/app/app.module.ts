@@ -13,9 +13,9 @@ import { MovieComponent } from './movie/movie.component';
 import { SeachBarComponent } from './shared/components/search-bar/seach-bar.component';
 import { ToolbarComponent } from './shared/components/toolbar/toolbar.component';
 import { MaterialModule } from './shared/modules/material.module';
+import { reducers } from './store/app.state';
 import { MovieEffects } from './store/effects/movie.effects';
 import { movieFeatureKey, moviesReducer } from './store/reducers/movie.reducer';
-import { reducers } from './store/app.state';
 
 @NgModule({
   declarations: [
@@ -36,15 +36,11 @@ import { reducers } from './store/app.state';
     ReactiveFormsModule,
     StoreModule.forRoot(reducers),
     StoreModule.forFeature(movieFeatureKey, moviesReducer),
-    EffectsModule.forRoot([]), // Add this line
+    EffectsModule.forRoot([]),
     EffectsModule.forFeature([MovieEffects]),
   ],
   exports: [MaterialModule],
-  providers: [
-    // provideStore(),
-    // provideState({ name: 'counter', reducer: counterReducer }),
-    // provideAnimationsAsync(),
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

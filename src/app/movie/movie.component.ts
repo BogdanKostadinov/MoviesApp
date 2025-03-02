@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -20,7 +20,6 @@ import {
   styleUrl: './movie.component.scss',
 })
 export class MovieComponent implements OnInit {
-  @Output() refreshTasksEvent = new EventEmitter<void>();
   movies: Movie[] = [];
   filteredMovies: Movie[] = [];
   movieCategories: Category[] = [];
@@ -80,11 +79,7 @@ export class MovieComponent implements OnInit {
       data,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.success) {
-        this.refreshTasksEvent.emit();
-      }
-    });
+    dialogRef.afterClosed().subscribe();
   }
 
   navigateToMovie(movieId: string): void {

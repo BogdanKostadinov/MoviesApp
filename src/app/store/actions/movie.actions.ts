@@ -15,7 +15,7 @@ export const addMovie = createAction(
 
 export const updateMovie = createAction(
   '[Movie API] Update Movie',
-  props<{ movie: Movie }>(),
+  props<{ id: string; movie: Movie }>(),
 );
 
 export const deleteMovie = createAction(

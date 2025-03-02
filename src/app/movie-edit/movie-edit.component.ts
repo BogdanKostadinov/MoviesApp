@@ -57,7 +57,10 @@ export class MovieEditComponent implements OnInit {
         .updateMovie(movieToUpdate.id as string, movieToUpdate)
         .subscribe(() => {
           this.store.dispatch(
-            MovieActions.updateMovie({ movie: movieToUpdate }),
+            MovieActions.updateMovie({
+              id: this.data.movie?.id || '',
+              movie: movieToUpdate,
+            }),
           );
           this.dialogRef.close({ success: true, action: 'edit' });
         });
