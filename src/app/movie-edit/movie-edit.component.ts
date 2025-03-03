@@ -1,9 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { Category } from '../shared/models/category.model';
 import { Movie, MovieToAdd } from '../shared/models/movie.model';
 import { CategoryService } from '../shared/services/category.service';
 import * as MovieActions from '../store/actions/movie.actions';
@@ -16,7 +19,8 @@ import * as MovieActions from '../store/actions/movie.actions';
 export class MovieEditComponent implements OnInit {
   title!: string;
   form!: FormGroup;
-  categories$: Observable<Category[]>;
+  genreCtrl = new FormControl<string[]>([]);
+  genres: { id: string; label: string }[] = [];
   currentYear = new Date().getFullYear() + 1;
 
   constructor(
@@ -26,11 +30,24 @@ export class MovieEditComponent implements OnInit {
     public fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA)
     public data: { action: 'add' | 'edit'; movie?: Movie },
-  ) {
-    this.categories$ = this.categoryService.getCategories();
-  }
+  ) {}
   ngOnInit(): void {
     this.title = this.data.action === 'edit' ? 'Edit movie' : 'Add movie';
+    this.categoryService.getCategories().subscribe((cat) => {
+      cat.map((c) => {
+        this.genres.push({ id: c.id, label: c.name });
+      });
+
+      console.log('Initial genre value:', this.data.movie?.genre);
+
+      const initialGenres = Array.isArray(this.data.movie?.genre)
+        ? this.data.movie.genre
+        : [];
+      this.genreCtrl.setValue(initialGenres);
+
+      // Debugging: Log the value being set to genreCtrl
+      console.log('Setting genreCtrl value:', initialGenres);
+    });
     this.initializeForm();
   }
 
@@ -44,14 +61,7 @@ export class MovieEditComponent implements OnInit {
           Validators.maxLength(100),
         ],
       ],
-      genre: [
-        this.data.movie?.genre || '',
-        [
-          Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(100),
-        ],
-      ],
+      genre: this.genreCtrl,
       releaseYear: [
         this.data.movie?.releaseYear || '',
         [

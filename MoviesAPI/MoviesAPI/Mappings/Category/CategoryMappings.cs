@@ -1,6 +1,6 @@
 using AutoMapper;
-using MoviesAPI.DTOs.Category;
-using MoviesAPI.Models;
+using MoviesAPI.DTOs.Categories;
+using MoviesAPI.Models.Category;
 
 namespace MoviesAPI.Mappings;
 

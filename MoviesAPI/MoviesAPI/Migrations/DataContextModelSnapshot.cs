@@ -22,10 +22,13 @@ namespace MoviesAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MoviesAPI.Models.Category", b =>
+            modelBuilder.Entity("MoviesAPI.Models.Category.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MovieId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -34,32 +37,32 @@ namespace MoviesAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MovieId");
+
                     b.ToTable("Categories");
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("d3e39d5e-3e4b-6d8a-9d3e-3e4b6d8a9d3e"),
+                            MovieId = new Guid("b1e29d5e-1c4b-4b8a-9b1e-1c4b4b8a9b1e"),
                             Name = "Action"
                         },
                         new
                         {
                             Id = new Guid("e4f49d5e-4f4b-7e8a-9e4e-4f4b7e8a9e4e"),
+                            MovieId = new Guid("c2f29d5e-2d4b-5c8a-9c2e-2d4b5c8a9c2e"),
                             Name = "Science Fiction"
                         });
                 });
 
-            modelBuilder.Entity("MoviesAPI.Models.Movie", b =>
+            modelBuilder.Entity("MoviesAPI.Models.Movie.Movie", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Director")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Genre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -79,7 +82,6 @@ namespace MoviesAPI.Migrations
                         {
                             Id = new Guid("b1e29d5e-1c4b-4b8a-9b1e-1c4b4b8a9b1e"),
                             Director = "Christopher Nolan",
-                            Genre = "Science Fiction",
                             ReleaseYear = 2010,
                             Title = "Inception"
                         },
@@ -87,10 +89,25 @@ namespace MoviesAPI.Migrations
                         {
                             Id = new Guid("c2f29d5e-2d4b-5c8a-9c2e-2d4b5c8a9c2e"),
                             Director = "Lana Wachowski, Lilly Wachowski",
-                            Genre = "Action",
                             ReleaseYear = 1999,
                             Title = "The Matrix"
                         });
+                });
+
+            modelBuilder.Entity("MoviesAPI.Models.Category.Category", b =>
+                {
+                    b.HasOne("MoviesAPI.Models.Movie.Movie", "Movie")
+                        .WithMany("Categories")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("MoviesAPI.Models.Movie.Movie", b =>
+                {
+                    b.Navigation("Categories");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,3 +1,4 @@
+using MoviesAPI.Models.Category;
 using System.ComponentModel.DataAnnotations;
 
 namespace MoviesAPI.DTOs.Movie;
@@ -9,7 +10,7 @@ public class MovieCreateDTO
   public required string Title { get; set; }
 
   [Required]
-  public required string Genre { get; set; }
+  public required List<Category> Categories { get; set; }
 
   [Required]
   [StringLength(100, MinimumLength = 1)]

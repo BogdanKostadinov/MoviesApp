@@ -14,16 +14,17 @@
     </mat-form-field>
 
     <!-- Genre -->
-    <mat-form-field>
-      <mat-label>Genre</mat-label>
-      <input matInput formControlName="genre" />
-      <mat-error *ngIf="showError('genre', 'required')"
-        >Genre is required</mat-error
-      >
-      <mat-error *ngIf="showError('genre', 'minlength', 'maxlength')">
-        Genre must be between 1-100 characters
-      </mat-error>
-    </mat-form-field>
+    <app-select-with-search
+      [label]="'Genre'"
+      [control]="genreCtrl"
+      [items]="genres"
+    ></app-select-with-search>
+    <mat-error *ngIf="showError('genre', 'required')"
+      >Genre is required</mat-error
+    >
+    <mat-error *ngIf="showError('genre', 'minlength', 'maxlength')">
+      Genre must be between 1-100 characters
+    </mat-error>
 
     <!-- Release Year -->
     <mat-form-field>

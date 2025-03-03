@@ -3,8 +3,8 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoviesAPI.Data;
-using MoviesAPI.DTOs.Category;
-using MoviesAPI.Models;
+using MoviesAPI.DTOs.Categories;
+using MoviesAPI.Models.Category;
 using MoviesAPI.Validation.MovieValidation;
 
 namespace MoviesAPI.Controllers;

@@ -1,4 +1,4 @@
-namespace MoviesAPI.DTOs.Category;
+namespace MoviesAPI.DTOs.Categories;
 
 public class CategoryCreateDTO
 {

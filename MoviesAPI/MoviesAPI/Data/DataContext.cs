@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MoviesAPI.Data.Mock_Data;
-using MoviesAPI.Models;
+using MoviesAPI.Models.Category;
+using MoviesAPI.Models.Movie;
 
 namespace MoviesAPI.Data;
 
@@ -11,8 +12,8 @@ public class DataContext : DbContext
   }
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    modelBuilder.Seed();
     base.OnModelCreating(modelBuilder);
+    modelBuilder.Seed();
   }
 
   public DbSet<Movie> Movies { get; set; }

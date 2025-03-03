@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoviesAPI.Data;
 using MoviesAPI.DTOs.Movie;
-using MoviesAPI.Models;
+using MoviesAPI.Models.Movie;
 using MoviesAPI.Validation.MovieValidation;
 
 namespace MoviesAPI.Controllers;
@@ -96,7 +96,7 @@ public class MovieController : ControllerBase
     {
       movie.Title = updatedMovie.Title;
       movie.ReleaseYear = updatedMovie.ReleaseYear;
-      movie.Genre = updatedMovie.Genre;
+      movie.Categories = updatedMovie.Categories;
       movie.Director = updatedMovie.Director;
 
       _context.Movies.Update(movie);
