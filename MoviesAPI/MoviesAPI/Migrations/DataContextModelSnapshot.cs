@@ -22,22 +22,18 @@ namespace MoviesAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MoviesAPI.Models.Category.Category", b =>
+            modelBuilder.Entity("MoviesAPI.Models.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("MovieId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
 
                     b.ToTable("Categories");
 
@@ -45,18 +41,16 @@ namespace MoviesAPI.Migrations
                         new
                         {
                             Id = new Guid("d3e39d5e-3e4b-6d8a-9d3e-3e4b6d8a9d3e"),
-                            MovieId = new Guid("b1e29d5e-1c4b-4b8a-9b1e-1c4b4b8a9b1e"),
                             Name = "Action"
                         },
                         new
                         {
                             Id = new Guid("e4f49d5e-4f4b-7e8a-9e4e-4f4b7e8a9e4e"),
-                            MovieId = new Guid("c2f29d5e-2d4b-5c8a-9c2e-2d4b5c8a9c2e"),
                             Name = "Science Fiction"
                         });
                 });
 
-            modelBuilder.Entity("MoviesAPI.Models.Movie.Movie", b =>
+            modelBuilder.Entity("MoviesAPI.Models.Movie", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,7 +65,8 @@ namespace MoviesAPI.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -94,20 +89,38 @@ namespace MoviesAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("MoviesAPI.Models.Category.Category", b =>
+            modelBuilder.Entity("MoviesAPI.Models.MovieCategory", b =>
                 {
-                    b.HasOne("MoviesAPI.Models.Movie.Movie", "Movie")
-                        .WithMany("Categories")
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MovieId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CategoryId", "MovieId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("MovieCategory");
+                });
+
+            modelBuilder.Entity("MoviesAPI.Models.MovieCategory", b =>
+                {
+                    b.HasOne("MoviesAPI.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MoviesAPI.Models.Movie", "Movie")
+                        .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Movie");
-                });
+                    b.Navigation("Category");
 
-            modelBuilder.Entity("MoviesAPI.Models.Movie.Movie", b =>
-                {
-                    b.Navigation("Categories");
+                    b.Navigation("Movie");
                 });
 #pragma warning restore 612, 618
         }

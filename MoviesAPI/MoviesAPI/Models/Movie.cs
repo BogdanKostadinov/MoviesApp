@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MoviesAPI.Models.Movie;
+namespace MoviesAPI.Models;
 
 public class Movie
 {
@@ -8,6 +8,6 @@ public class Movie
   public Guid Id { get; set; }
   public required string Title { get; set; }
   public required int ReleaseYear { get; set; }
-  public List<Category.Category> Categories { get; set; } = new();
   public required string Director { get; set; }
+  public List<Category> Categories { get; } = new();
 }

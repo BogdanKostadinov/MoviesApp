@@ -1,10 +1,9 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace MoviesAPI.DTOs.Categories;
+namespace MoviesAPI.DTOs;
 
 public class CategoryDTO
 {
-  [Key]
   public Guid Id { get; set; }
   public required string Name { get; set; }
+  public List<Guid> MovieIds { get; set; } = new();
+
 }

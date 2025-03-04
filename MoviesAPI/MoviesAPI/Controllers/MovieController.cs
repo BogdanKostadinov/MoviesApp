@@ -2,8 +2,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoviesAPI.Data;
-using MoviesAPI.DTOs.Movie;
-using MoviesAPI.Models.Movie;
+using MoviesAPI.DTOs;
+using MoviesAPI.Models;
 using MoviesAPI.Validation.MovieValidation;
 
 namespace MoviesAPI.Controllers;
@@ -26,7 +26,10 @@ public class MovieController : ControllerBase
   [HttpGet(Name = "GetMovies")]
   public async Task<IActionResult> GetMoviesAsync()
   {
-    var movies = await _context.Movies.ToListAsync();
+    var movies = await _context.Movies
+        .Include(m => m.Categories)
+        .ToListAsync();
+
     var movieDTOs = _mapper.Map<IEnumerable<MovieDTO>>(movies);
     return Ok(movieDTOs);
   }
@@ -34,11 +37,15 @@ public class MovieController : ControllerBase
   [HttpGet("{id}")]
   public async Task<IActionResult> GetMovieAsync(Guid id)
   {
-    var movie = await _context.Movies.FindAsync(id);
+    var movie = await _context.Movies
+        .Include(m => m.Categories)
+        .FirstOrDefaultAsync(m => m.Id == id);
+
     if (movie == null)
     {
       return NotFound();
     }
+
     var movieDTO = _mapper.Map<MovieDTO>(movie);
     return Ok(movieDTO);
   }
@@ -63,6 +70,13 @@ public class MovieController : ControllerBase
       var movie = _mapper.Map<Movie>(newMovie);
       movie.Id = Guid.NewGuid();
 
+      // Retrieve existing categories from the database
+      var categories = await _context.Categories
+          .Where(c => newMovie.CategoryIds.Contains(c.Id))
+          .ToListAsync();
+
+      movie.Categories.AddRange(categories);
+
       await _context.Movies.AddAsync(movie);
       await _context.SaveChangesAsync();
 
@@ -81,8 +95,6 @@ public class MovieController : ControllerBase
     var validator = new MovieUpdateDTOValidator(_context);
     var validationResult = await validator.ValidateAsync(updatedMovie);
 
-    var movie = await _context.Movies.FindAsync(id);
-
     if (!validationResult.IsValid)
     {
       foreach (var error in validationResult.Errors)
@@ -92,19 +104,26 @@ public class MovieController : ControllerBase
       return BadRequest(ModelState);
     }
 
-    if (movie is not null)
+    var movie = await _context.Movies.Include(m => m.Categories).FirstOrDefaultAsync(m => m.Id == id);
+    if (movie == null)
     {
-      movie.Title = updatedMovie.Title;
-      movie.ReleaseYear = updatedMovie.ReleaseYear;
-      movie.Categories = updatedMovie.Categories;
-      movie.Director = updatedMovie.Director;
-
-      _context.Movies.Update(movie);
-      await _context.SaveChangesAsync();
-
-      return Ok(movie);
+      return NotFound();
     }
-    return NotFound();
+
+    _mapper.Map(updatedMovie, movie);
+    movie.Categories.Clear();
+
+    // Retrieve existing categories from the database
+    var categories = await _context.Categories
+        .Where(c => updatedMovie.CategoryIds.Contains(c.Id))
+        .ToListAsync();
+
+    movie.Categories.AddRange(categories);
+
+    _context.Movies.Update(movie);
+    await _context.SaveChangesAsync();
+
+    return Ok(movie);
   }
 
   [HttpDelete("{id}")]
