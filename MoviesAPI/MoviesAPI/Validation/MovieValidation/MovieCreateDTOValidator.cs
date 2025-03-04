@@ -2,7 +2,6 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using MoviesAPI.Data;
 using MoviesAPI.DTOs;
-using MoviesAPI.Validation.CategoryValidation;
 
 namespace MoviesAPI.Validation.MovieValidation;
 

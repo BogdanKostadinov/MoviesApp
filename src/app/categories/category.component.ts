@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MatChipSelectionChange } from '@angular/material/chips';
+import { Observable } from 'rxjs';
 import { Category } from '../shared/models/category.model';
 import { CategoryService } from '../shared/services/category.service';
 
@@ -10,18 +11,25 @@ import { CategoryService } from '../shared/services/category.service';
 })
 export class CategoryComponent {
   @Output() applyChipsEvent = new EventEmitter<Category[]>();
-  categories: Category[] = [];
+  categories$: Observable<Category[]>;
+  selectedCategories: Category[] = [];
   constructor(private categoryService: CategoryService) {
-    this.categoryService.getCategories().subscribe((categories) => {
-      this.categories = categories;
-    });
+    this.categories$ = this.categoryService.getCategories();
   }
 
   selectChip(event: MatChipSelectionChange, category: Category): void {
     category.selected = event.selected;
-    this.categories = this.categories.map((cat) =>
-      cat.name === category.name ? category : cat,
-    );
-    this.applyChipsEvent.emit(this.categories);
+    if (event.selected) {
+      this.selectedCategories = [...this.selectedCategories, category];
+    } else {
+      this.selectedCategories = this.selectedCategories.filter(
+        (cat) => cat.id !== category.id,
+      );
+    }
+    this.applyChipsEvent.emit(this.selectedCategories);
+  }
+
+  trackByCategoryId(index: number, category: Category): string {
+    return category.id;
   }
 }

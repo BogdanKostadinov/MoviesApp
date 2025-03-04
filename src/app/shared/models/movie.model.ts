@@ -1,11 +1,13 @@
+import { Category } from './category.model';
+
 export interface Movie {
   id: string;
   title: string;
   director: string;
   releaseYear: number;
-  genre: string[];
+  categories: Category[];
 }
 
-export interface MovieToAdd extends Omit<Movie, 'id'> {
-
+export interface MovieToEdit extends Omit<Movie, 'id'> {
+  categoryIds: string[];
 }

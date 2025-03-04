@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Movie, MovieToAdd } from '../../shared/models/movie.model';
+import { Movie, MovieToEdit } from '../../shared/models/movie.model';
 
 export const loadMovies = createAction('[Movie API] Load Movies');
 
@@ -14,7 +14,7 @@ export const loadMoviesFailure = createAction(
 
 export const addMovie = createAction(
   '[Movie API] Add Movie',
-  props<{ movie: MovieToAdd }>(),
+  props<{ movie: MovieToEdit }>(),
 );
 
 export const addMovieSuccess = createAction(

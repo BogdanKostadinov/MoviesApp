@@ -7,7 +7,8 @@ import {
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
-import { Movie, MovieToAdd } from '../shared/models/movie.model';
+import { SelectItem } from '../shared/components/select-with-search/select-with-search.component';
+import { Movie, MovieToEdit } from '../shared/models/movie.model';
 import { CategoryService } from '../shared/services/category.service';
 import * as MovieActions from '../store/actions/movie.actions';
 
@@ -19,8 +20,8 @@ import * as MovieActions from '../store/actions/movie.actions';
 export class MovieEditComponent implements OnInit {
   title!: string;
   form!: FormGroup;
-  genreCtrl = new FormControl<string[]>([]);
-  genres: { id: string; label: string }[] = [];
+  categoryCtrl = new FormControl<string[]>([], Validators.required);
+  categoryItems: SelectItem[] = [];
   currentYear = new Date().getFullYear() + 1;
 
   constructor(
@@ -33,20 +34,16 @@ export class MovieEditComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.title = this.data.action === 'edit' ? 'Edit movie' : 'Add movie';
-    this.categoryService.getCategories().subscribe((cat) => {
-      cat.map((c) => {
-        this.genres.push({ id: c.id, label: c.name });
-      });
 
-      console.log('Initial genre value:', this.data.movie?.genre);
+    this.categoryService.getCategories().subscribe((categories) => {
+      this.categoryItems = categories.map((category) => ({
+        id: category.id,
+        label: category.name,
+      }));
 
-      const initialGenres = Array.isArray(this.data.movie?.genre)
-        ? this.data.movie.genre
-        : [];
-      this.genreCtrl.setValue(initialGenres);
-
-      // Debugging: Log the value being set to genreCtrl
-      console.log('Setting genreCtrl value:', initialGenres);
+      const initialCategoryIds =
+        this.data.movie?.categories?.map((category) => category.id) || [];
+      this.categoryCtrl.setValue(initialCategoryIds);
     });
     this.initializeForm();
   }
@@ -61,7 +58,6 @@ export class MovieEditComponent implements OnInit {
           Validators.maxLength(100),
         ],
       ],
-      genre: this.genreCtrl,
       releaseYear: [
         this.data.movie?.releaseYear || '',
         [
@@ -78,12 +74,13 @@ export class MovieEditComponent implements OnInit {
           Validators.maxLength(100),
         ],
       ],
+      categoryIds: this.categoryCtrl,
     });
   }
   saveMovie(action: string): void {
     if (!this.validateForm()) return;
 
-    const movieToSave: MovieToAdd = this.form.value;
+    const movieToSave: MovieToEdit = this.form.value;
 
     if (action === 'add') {
       this.store.dispatch(MovieActions.addMovie({ movie: movieToSave }));

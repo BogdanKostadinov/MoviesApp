@@ -13,10 +13,8 @@ export interface SelectItem {
 })
 export class SelectWithSearchComponent implements OnInit {
   @Input() label = '';
-  @Input() control!: FormControl;
+  @Input() control: FormControl<string[] | null> = new FormControl([]);
   @Input() items: SelectItem[] = [];
 
-  ngOnInit(): void {
-    console.log('this.items', this.items);
-  }
+  ngOnInit(): void {}
 }

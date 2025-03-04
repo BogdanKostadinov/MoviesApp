@@ -6,5 +6,5 @@ public class MovieDTO
   public required string Title { get; set; }
   public required int ReleaseYear { get; set; }
   public required string Director { get; set; }
-  public List<Guid> CategoryIds { get; set; } = new();
+  public List<CategoryDTO> Categories { get; set; } = new();
 }

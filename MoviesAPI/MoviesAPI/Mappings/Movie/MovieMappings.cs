@@ -26,7 +26,7 @@ public class MovieProfile : Profile
 
     // Movie to MovieDTO
     CreateMap<Movie, MovieDTO>()
-        .ForMember(dest => dest.CategoryIds, opt => opt.MapFrom(src => src.Categories.Select(c => c.Id).ToList()));
+        .ForMember(dest => dest.Categories, opt => opt.MapFrom(src => src.Categories));
 
     // MovieDTO to Movie
     CreateMap<MovieDTO, Movie>()

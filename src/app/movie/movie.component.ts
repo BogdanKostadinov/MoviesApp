@@ -51,18 +51,24 @@ export class MovieComponent implements OnInit {
 
   applyFilters(): void {
     let filteredMovies = this.movies;
-    if (this.movieCategories.filter((cat) => cat.selected).length > 0) {
+
+    const selectedCategories = this.movieCategories.filter(
+      (cat) => cat.selected,
+    );
+    if (selectedCategories.length > 0) {
       filteredMovies = filteredMovies.filter((movie) =>
-        this.movieCategories
-          .filter((cat) => cat.selected)
-          .some((cat) => movie.genre.includes(cat.name)),
+        selectedCategories.some((cat) =>
+          movie.categories.some((c) => c.name === cat.name),
+        ),
       );
     }
+
     if (this.searchValue) {
       filteredMovies = filteredMovies.filter((movie) =>
         movie.title.toLowerCase().includes(this.searchValue.toLowerCase()),
       );
     }
+
     this.filteredMovies = filteredMovies;
   }
 
@@ -73,7 +79,7 @@ export class MovieComponent implements OnInit {
 
   openDialog(data: { action: string; movie?: Movie }): void {
     const dialogRef = this.dialog.open(MovieEditComponent, {
-      width: '400px',
+      width: '600px',
       data,
     });
 
@@ -86,5 +92,11 @@ export class MovieComponent implements OnInit {
 
   deleteMovieRequest(movie: Movie): void {
     this.store.dispatch(MovieActions.deleteMovie({ movieId: movie.id }));
+  }
+
+  getCategoryNames(movie: Movie): string {
+    return (
+      movie.categories.map((category: any) => category.name).join(', ') || ''
+    );
   }
 }

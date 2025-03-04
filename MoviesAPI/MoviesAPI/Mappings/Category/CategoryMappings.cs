@@ -8,6 +8,12 @@ public class CategoryMappings : Profile
 {
   public CategoryMappings()
   {
+    // Category to CategoryDTO
+    CreateMap<Category, CategoryDTO>();
+
+    // CategoryDTO to Category
+    CreateMap<CategoryDTO, Category>();
+
     // CategoryCreateDTO to Category
     CreateMap<CategoryCreateDTO, Category>()
         .ForMember(dest => dest.Movies, opt => opt.Ignore());
@@ -23,13 +29,5 @@ public class CategoryMappings : Profile
     // Category to CategoryUpdateDTO
     CreateMap<Category, CategoryUpdateDTO>()
         .ForMember(dest => dest.MovieIds, opt => opt.MapFrom(src => src.Movies.Select(m => m.Id).ToList()));
-
-    // Category to CategoryDTO
-    CreateMap<Category, CategoryDTO>()
-        .ForMember(dest => dest.MovieIds, opt => opt.MapFrom(src => src.Movies.Select(m => m.Id).ToList()));
-
-    // CategoryDTO to Category
-    CreateMap<CategoryDTO, Category>()
-        .ForMember(dest => dest.Movies, opt => opt.Ignore());
   }
 }
