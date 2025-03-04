@@ -29,9 +29,15 @@ export class MovieService {
       .pipe(catchError(this.handleError));
   }
 
-  updateMovie(id: string, updatedMovie: Movie): Observable<Movie> {
+  updateMovie(id: string, updatedMovie: MovieToEdit): Observable<Movie> {
+    const patchDoc = this.createPatchDocument(updatedMovie);
+
     return this.http
-      .put<Movie>(`${this.url}/${id}`, updatedMovie)
+      .patch<Movie>(`${this.url}/${id}`, patchDoc, {
+        headers: {
+          'Content-Type': 'application/json-patch+json',
+        },
+      })
       .pipe(catchError(this.handleError));
   }
 
@@ -56,5 +62,30 @@ export class MovieService {
     }
 
     return throwError(() => new Error(errorMessage));
+  }
+
+  private createPatchDocument(updatedMovie: Partial<MovieToEdit>): any[] {
+    const patchDoc: any[] = [];
+
+    // Define a mapping of property names to their corresponding JSON paths
+    const propertyPaths: { [key: string]: string } = {
+      title: '/title',
+      director: '/director',
+      releaseYear: '/releaseYear',
+      categoryIds: '/categoryIds',
+    };
+
+    // Iterate over the properties and add patch operations for defined properties
+    for (const key in propertyPaths) {
+      if (updatedMovie[key as keyof MovieToEdit] !== undefined) {
+        patchDoc.push({
+          op: 'replace',
+          path: propertyPaths[key],
+          value: updatedMovie[key as keyof MovieToEdit],
+        });
+      }
+    }
+
+    return patchDoc;
   }
 }

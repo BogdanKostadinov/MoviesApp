@@ -8,32 +8,40 @@ namespace MoviesAPI.Validation.MovieValidation;
 public class MovieUpdateDTOValidator : AbstractValidator<MovieUpdateDTO>
 {
   private readonly DataContext _context;
-  public MovieUpdateDTOValidator(DataContext context)
+  private readonly Guid _movieId;
+
+  public MovieUpdateDTOValidator(DataContext context, Guid movieId)
   {
     _context = context;
+    _movieId = movieId;
 
     RuleFor(x => x.Title)
-        .NotEmpty().WithMessage("Title is required")
+        .MustAsync(HaveUniqueTitleIfProvided).WithMessage("A movie with this name already exists")
+        .When(x => !string.IsNullOrEmpty(x.Title))
         .Length(1, 100).WithMessage("Title must be between 1 and 100 characters")
-        .MustAsync(HaveUniqueTitle).WithMessage("A movie with this name already exists");
+        .When(x => !string.IsNullOrEmpty(x.Title));
 
     RuleFor(x => x.Director)
-        .NotEmpty().WithMessage("Director is required")
-        .Length(1, 100).WithMessage("Director must be between 1 and 100 characters");
+        .Length(1, 100).WithMessage("Director must be between 1 and 100 characters")
+        .When(x => !string.IsNullOrEmpty(x.Director));
 
     RuleFor(x => x.ReleaseYear)
         .InclusiveBetween(1888, DateTime.Now.Year + 1)
-        .WithMessage($"Release year must be between 1888 and {DateTime.Now.Year + 1}");
+        .WithMessage($"Release year must be between 1888 and {DateTime.Now.Year + 1}")
+        .When(x => x.ReleaseYear.HasValue);
 
     RuleFor(x => x.CategoryIds)
-        .Must(HaveValidCategoryIds).WithMessage("One or more category IDs are invalid.");
+        .Must(HaveValidCategoryIds).WithMessage("One or more category IDs are invalid.")
+        .When(x => x.CategoryIds != null && x.CategoryIds.Any());
   }
-  private async Task<bool> HaveUniqueTitle(string title, CancellationToken cancellationToken)
+
+  private async Task<bool> HaveUniqueTitleIfProvided(string? title, CancellationToken cancellationToken)
   {
-    return !await _context.Movies
-        .AnyAsync(c => c.Title == title, cancellationToken);
+    // Allow the same title if it's the movie's current title
+    return !await _context.Movies.AnyAsync(m => m.Title == title && m.Id != _movieId, cancellationToken);
   }
-  private bool HaveValidCategoryIds(MovieUpdateDTO dto, List<Guid> categoryIds)
+
+  private bool HaveValidCategoryIds(MovieUpdateDTO dto, List<Guid>? categoryIds)
   {
     if (categoryIds == null || !categoryIds.Any())
     {

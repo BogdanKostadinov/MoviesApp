@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoviesAPI.Data;
@@ -89,11 +90,32 @@ public class MovieController : ControllerBase
     }
   }
 
-  [HttpPut("{id}")]
-  public async Task<IActionResult> UpdateMovieAsync(Guid id, [FromBody] MovieUpdateDTO updatedMovie)
+  [HttpPatch("{id}")]
+  public async Task<IActionResult> UpdateMovieAsync(Guid id, [FromBody] JsonPatchDocument<MovieUpdateDTO> patchDoc)
   {
-    var validator = new MovieUpdateDTOValidator(_context);
-    var validationResult = await validator.ValidateAsync(updatedMovie);
+    var movie = await _context.Movies.Include(m => m.Categories).FirstOrDefaultAsync(m => m.Id == id);
+    if (movie == null)
+    {
+      return NotFound();
+    }
+
+    // Map the existing movie to a DTO
+    var movieDTO = _mapper.Map<MovieUpdateDTO>(movie);
+
+    // Apply the patch to the DTO
+    patchDoc.ApplyTo(movieDTO, error =>
+    {
+      ModelState.AddModelError(error.Operation.path, error.ErrorMessage);
+    });
+
+    if (!ModelState.IsValid)
+    {
+      return BadRequest(ModelState);
+    }
+
+    // Validate the updated DTO
+    var validator = new MovieUpdateDTOValidator(_context, id);
+    var validationResult = await validator.ValidateAsync(movieDTO);
 
     if (!validationResult.IsValid)
     {
@@ -104,21 +126,19 @@ public class MovieController : ControllerBase
       return BadRequest(ModelState);
     }
 
-    var movie = await _context.Movies.Include(m => m.Categories).FirstOrDefaultAsync(m => m.Id == id);
-    if (movie == null)
-    {
-      return NotFound();
-    }
+    // Map the updated DTO back to the movie entity
+    _mapper.Map(movieDTO, movie);
 
-    _mapper.Map(updatedMovie, movie);
+    // Clear existing categories and add the updated ones
     movie.Categories.Clear();
+    if (movieDTO.CategoryIds != null && movieDTO.CategoryIds.Any())
+    {
+      var categories = await _context.Categories
+          .Where(c => movieDTO.CategoryIds.Contains(c.Id))
+          .ToListAsync();
 
-    // Retrieve existing categories from the database
-    var categories = await _context.Categories
-        .Where(c => updatedMovie.CategoryIds.Contains(c.Id))
-        .ToListAsync();
-
-    movie.Categories.AddRange(categories);
+      movie.Categories.AddRange(categories);
+    }
 
     _context.Movies.Update(movie);
     await _context.SaveChangesAsync();

@@ -29,7 +29,7 @@ export const addMovieFailure = createAction(
 
 export const updateMovie = createAction(
   '[Movie API] Update Movie',
-  props<{ id: string; movie: Movie }>(),
+  props<{ id: string; movie: MovieToEdit }>(),
 );
 
 export const updateMovieSuccess = createAction(

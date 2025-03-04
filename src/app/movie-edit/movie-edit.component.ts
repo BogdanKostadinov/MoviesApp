@@ -91,7 +91,6 @@ export class MovieEditComponent implements OnInit {
           movie: {
             ...this.data.movie,
             ...movieToSave,
-            id: this.data.movie!.id,
           },
         }),
       );
