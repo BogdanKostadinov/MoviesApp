@@ -3,3 +3,5 @@ export interface Category {
   name: string;
   selected: boolean;
 }
+
+export interface CategoryToEdit extends Omit<Category, 'id' | 'selected'> {}

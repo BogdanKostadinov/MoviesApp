@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
-import { Category } from '../models/category.model';
+import { Category, CategoryToEdit } from '../models/category.model';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +23,7 @@ export class CategoryService {
       .pipe(catchError(this.handleError));
   }
 
-  addCategory(category: Category): Observable<Category> {
+  addCategory(category: CategoryToEdit): Observable<Category> {
     return this.http
       .post<Category>(this.url, category)
       .pipe(catchError(this.handleError));

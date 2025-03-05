@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MatChipSelectionChange } from '@angular/material/chips';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
+import { CategoryEditComponent } from '../category-edit/category-edit.component';
 import { Category } from '../shared/models/category.model';
 import { CategoryService } from '../shared/services/category.service';
 
@@ -13,7 +15,11 @@ export class CategoryComponent {
   @Output() applyChipsEvent = new EventEmitter<Category[]>();
   categories$: Observable<Category[]>;
   selectedCategories: Category[] = [];
-  constructor(private categoryService: CategoryService) {
+
+  constructor(
+    private categoryService: CategoryService,
+    private dialog: MatDialog,
+  ) {
     this.categories$ = this.categoryService.getCategories();
   }
 
@@ -31,5 +37,13 @@ export class CategoryComponent {
 
   trackByCategoryId(index: number, category: Category): string {
     return category.id;
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(CategoryEditComponent, {
+      width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe();
   }
 }

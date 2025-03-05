@@ -17,6 +17,7 @@ import { reducers } from './store/app.state';
 import { MovieEffects } from './store/effects/movie.effects';
 import { movieFeatureKey, moviesReducer } from './store/reducers/movie.reducer';
 import { SelectWithSearchComponent } from './shared/components/select-with-search/select-with-search.component';
+import { CategoryEditComponent } from './category-edit/category-edit.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { SelectWithSearchComponent } from './shared/components/select-with-searc
     CategoryComponent,
     SeachBarComponent,
     SelectWithSearchComponent,
+    CategoryEditComponent,
   ],
   imports: [
     BrowserAnimationsModule,

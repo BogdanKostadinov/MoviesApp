@@ -10,5 +10,13 @@
         {{ category.name }}
       </mat-chip-option>
     </mat-chip-set>
+    <button
+      mat-mini-fab
+      color="primary"
+      class="add-button"
+      (click)="openDialog()"
+    >
+      <mat-icon> add </mat-icon>
+    </button>
   </div>
 </ng-container>
