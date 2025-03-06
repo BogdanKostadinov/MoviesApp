@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
 import { CategoryToEdit } from '../shared/models/category.model';
-import { CategoryService } from '../shared/services/category.service';
+import * as CategoryActions from '../store/actions/category.actions';
 
 @Component({
   selector: 'app-category-edit',
@@ -14,7 +15,7 @@ export class CategoryEditComponent {
 
   constructor(
     private dialogRef: MatDialogRef<CategoryEditComponent>,
-    private categoryService: CategoryService,
+    private store: Store,
   ) {}
 
   saveCategory(): void {
@@ -23,9 +24,11 @@ export class CategoryEditComponent {
       name: this.categoryNameCtrl.value as string,
     };
 
-    this.categoryService
-      .addCategory(categoryToEdit)
-      .subscribe(() => this.dialogRef.close());
+    this.store.dispatch(
+      CategoryActions.createCategory({ category: categoryToEdit }),
+    );
+
+    this.dialogRef.close();
   }
   showError(control: FormControl, ...errors: string[]): boolean {
     if (!control) return false;

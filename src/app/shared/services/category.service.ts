@@ -23,7 +23,7 @@ export class CategoryService {
       .pipe(catchError(this.handleError));
   }
 
-  addCategory(category: CategoryToEdit): Observable<Category> {
+  createCategory(category: CategoryToEdit): Observable<Category> {
     return this.http
       .post<Category>(this.url, category)
       .pipe(catchError(this.handleError));
@@ -38,11 +38,10 @@ export class CategoryService {
       .pipe(catchError(this.handleError));
   }
 
-  deleteCategory(id: string): void {
-    this.http
-      .delete(`${this.url}/${id}`)
-      .pipe(catchError(this.handleError))
-      .subscribe();
+  deleteCategory(id: string): Observable<void> {
+    return this.http
+      .delete<void>(`${this.url}/${id}`)
+      .pipe(catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {

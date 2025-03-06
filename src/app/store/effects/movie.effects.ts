@@ -7,6 +7,12 @@ import * as MovieActions from '../actions/movie.actions';
 
 @Injectable()
 export class MovieEffects {
+  constructor(
+    private actions$: Actions,
+    private store: Store,
+    private movieService: MovieService,
+  ) {}
+
   getMovies$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MovieActions.loadMovies),
@@ -63,10 +69,4 @@ export class MovieEffects {
       ),
     ),
   );
-
-  constructor(
-    private actions$: Actions,
-    private store: Store,
-    private movieService: MovieService,
-  ) {}
 }

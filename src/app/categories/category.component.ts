@@ -1,10 +1,16 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MatChipSelectionChange } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { CategoryEditComponent } from '../category-edit/category-edit.component';
 import { Category } from '../shared/models/category.model';
-import { CategoryService } from '../shared/services/category.service';
+import * as CategoryActions from '../store/actions/category.actions';
+import { AppState } from '../store/app.state';
+import {
+  selectAllCategories,
+  selectLastUpdated,
+} from '../store/selectors/category.selectors';
 
 @Component({
   selector: 'app-category',
@@ -13,20 +19,24 @@ import { CategoryService } from '../shared/services/category.service';
 })
 export class CategoryComponent {
   @Output() applyChipsEvent = new EventEmitter<Category[]>();
-  categories$: Observable<Category[]>;
   selectedCategories: Category[] = [];
 
+  categories$: Observable<Category[]>;
+  lastUpdated$: Observable<string | null>;
+
   constructor(
-    private categoryService: CategoryService,
+    private store: Store<AppState>,
     private dialog: MatDialog,
   ) {
-    this.categories$ = this.categoryService.getCategories();
+    this.categories$ = this.store.select(selectAllCategories);
+    this.lastUpdated$ = this.store.select(selectLastUpdated);
+    this.store.dispatch(CategoryActions.getCategories());
   }
 
   selectChip(event: MatChipSelectionChange, category: Category): void {
-    category.selected = event.selected;
+    const updatedCategory = { ...category, selected: event.selected };
     if (event.selected) {
-      this.selectedCategories = [...this.selectedCategories, category];
+      this.selectedCategories = [...this.selectedCategories, updatedCategory];
     } else {
       this.selectedCategories = this.selectedCategories.filter(
         (cat) => cat.id !== category.id,
