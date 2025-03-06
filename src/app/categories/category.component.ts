@@ -56,4 +56,7 @@ export class CategoryComponent {
 
     dialogRef.afterClosed().subscribe();
   }
+  deleteCategory(category: Category): void {
+    this.store.dispatch(CategoryActions.deleteCategory({ id: category.id }));
+  }
 }

@@ -8,6 +8,9 @@
         (selectionChange)="selectChip($event, category)"
       >
         {{ category.name }}
+        <button matChipRemove (click)="deleteCategory(category)">
+          <mat-icon>close</mat-icon>
+        </button>
       </mat-chip-option>
     </mat-chip-set>
     <button
