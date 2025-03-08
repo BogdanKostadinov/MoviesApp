@@ -11,6 +11,9 @@
       <mat-error *ngIf="showError('title', 'minlength', 'maxlength')">
         Title must be between 1-100 characters
       </mat-error>
+      <mat-error *ngIf="showError('title', 'nameExists')">
+        Name already exists
+      </mat-error>
     </mat-form-field>
 
     <!-- Category -->
@@ -20,11 +23,15 @@
       [items]="categoryItems"
     ></app-select-with-search>
 
-
     <!-- Release Year -->
     <mat-form-field>
       <mat-label>Release year</mat-label>
-      <input matInput formControlName="releaseYear" />
+      <input
+        matInput
+        type="number"
+        formControlName="releaseYear"
+        (keydown)="preventSpaces($event)"
+      />
       <mat-error *ngIf="showError('releaseYear', 'required')"
         >Release year is required</mat-error
       >

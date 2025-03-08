@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { CategoryToEdit } from '../shared/models/category.model';
 import * as CategoryActions from '../store/actions/category.actions';
+import { ValidationHelper } from '../shared/helpers/validation';
 
 @Component({
   selector: 'app-category-edit',
@@ -30,10 +31,8 @@ export class CategoryEditComponent {
 
     this.dialogRef.close();
   }
-  showError(control: FormControl, ...errors: string[]): boolean {
-    if (!control) return false;
-
-    return errors.some((error) => control.hasError(error));
+  showError(...errors: string[]): boolean {
+    return ValidationHelper.showErrorForControl(this.categoryNameCtrl, ...errors);
   }
   navigateBack(): void {
     this.dialogRef.close();

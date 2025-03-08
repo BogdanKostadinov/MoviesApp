@@ -8,9 +8,12 @@ import {
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { SelectItem } from '../shared/components/select-with-search/select-with-search.component';
+import { ValidationHelper } from '../shared/helpers/validation';
 import { Movie, MovieToEdit } from '../shared/models/movie.model';
 import { CategoryService } from '../shared/services/category.service';
 import * as MovieActions from '../store/actions/movie.actions';
+import { AppState } from '../store/app.state';
+import { selectAllMovies } from '../store/selectors/movie.selectors';
 
 @Component({
   selector: 'app-movie-edit',
@@ -23,11 +26,12 @@ export class MovieEditComponent implements OnInit {
   categoryCtrl = new FormControl<string[]>([], Validators.required);
   categoryItems: SelectItem[] = [];
   currentYear = new Date().getFullYear() + 1;
+  existingMovieTitles: string[] = [];
 
   constructor(
     private categoryService: CategoryService,
     private dialogRef: MatDialogRef<MovieEditComponent>,
-    private store: Store,
+    private store: Store<AppState>,
     public fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA)
     public data: { action: 'add' | 'edit'; movie?: Movie },
@@ -45,6 +49,12 @@ export class MovieEditComponent implements OnInit {
         this.data.movie?.categories?.map((category) => category.id) || [];
       this.categoryCtrl.setValue(initialCategoryIds);
     });
+
+    this.store.select(selectAllMovies).subscribe((movies) => {
+      this.existingMovieTitles = movies
+        .filter((m) => m.id !== this.data.movie?.id)
+        .map((movie) => movie.title);
+    });
     this.initializeForm();
   }
 
@@ -56,6 +66,7 @@ export class MovieEditComponent implements OnInit {
           Validators.required,
           Validators.minLength(1),
           Validators.maxLength(100),
+          ValidationHelper.nameExistsValidator(this.existingMovieTitles),
         ],
       ],
       releaseYear: [
@@ -78,7 +89,8 @@ export class MovieEditComponent implements OnInit {
     });
   }
   saveMovie(action: string): void {
-    if (!this.validateForm()) return;
+    ValidationHelper.trimFormControlValues(this.form);
+    if (!ValidationHelper.validateForm(this.form)) return;
 
     const movieToSave: MovieToEdit = this.form.value;
 
@@ -99,19 +111,15 @@ export class MovieEditComponent implements OnInit {
     this.dialogRef.close({ success: true, action: this.data.action });
   }
 
-  validateForm(): boolean {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      this.form.updateValueAndValidity();
+  preventSpaces(event: KeyboardEvent): void {
+    if (event.key === ' ') {
+      event.preventDefault();
     }
-    return this.form.valid;
   }
 
   showError(controlName: string, ...errors: string[]): boolean {
-    const control = this.form.get(controlName);
-    if (!control) return false;
-
-    return errors.some((error) => control.hasError(error));
+    const control = this.form.get(controlName) as FormControl;
+    return ValidationHelper.showErrorForControl(control, ...errors);
   }
 
   navigateBack(): void {
