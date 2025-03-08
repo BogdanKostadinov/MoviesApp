@@ -1,4 +1,4 @@
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 
 export class ValidationHelper {
   static showErrorForControl(
@@ -18,8 +18,14 @@ export class ValidationHelper {
     return form.valid;
   }
 
+  static validateControl(control: FormControl): boolean {
+    control.markAsTouched();
+    control.updateValueAndValidity();
+    return control.valid;
+  }
+
   static nameExistsValidator(arr: string[]) {
-    return (control: FormControl) => {
+    return (control: AbstractControl) => {
       const name = control.value;
       if (arr.some((n) => n.toLowerCase() === name.toLowerCase())) {
         return { nameExists: 'Name already exists' };
@@ -35,5 +41,18 @@ export class ValidationHelper {
         control.setValue(control.value.trim());
       }
     });
+  }
+
+  static trimFormControlValue(control: FormControl): void {
+    control.setValue(control.value.trim());
+  }
+
+  static noWhitespaceValidator() {
+    return (control: AbstractControl) => {
+      if (control.value.trim().length === 0) {
+        return { noWhitespace: 'Value cannot be empty' };
+      }
+      return null;
+    };
   }
 }
