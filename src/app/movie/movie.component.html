@@ -2,7 +2,10 @@
   (searchValueChange)="onSearchValueChange($event)"
 ></app-seach-bar>
 
-<app-category (applyChipsEvent)="onApplyChips($event)"></app-category>
+<app-category
+  (applyChipsEvent)="onApplyChips($event)"
+  (deleteChipEvent)="clearDeletedCategory($event)"
+></app-category>
 
 <div class="movies-container">
   <div *ngFor="let movie of filteredMovies" class="movie-card">

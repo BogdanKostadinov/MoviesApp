@@ -44,32 +44,32 @@ export class MovieComponent implements OnInit {
     });
   }
 
-  onApplyChips(categories: Category[]): void {
-    this.movieCategories = categories;
+  onApplyChips(category: Category): void {
+    const existingCategory = this.movieCategories.find(
+      (cat) => cat.id === category.id,
+    );
+    if (existingCategory) {
+      existingCategory.selected = category.selected;
+    } else {
+      this.movieCategories.push(category);
+    }
+    this.movieCategories = this.movieCategories.filter((cat) => cat.selected);
     this.applyFilters();
   }
 
   applyFilters(): void {
-    let filteredMovies = this.movies;
-
     const selectedCategories = this.movieCategories.filter(
       (cat) => cat.selected,
     );
-    if (selectedCategories.length > 0) {
-      filteredMovies = filteredMovies.filter((movie) =>
-        selectedCategories.some((cat) =>
-          movie.categories.some((c) => c.name === cat.name),
-        ),
-      );
-    }
-
-    if (this.searchValue) {
-      filteredMovies = filteredMovies.filter((movie) =>
-        movie.title.toLowerCase().includes(this.searchValue.toLowerCase()),
-      );
-    }
-
-    this.filteredMovies = filteredMovies;
+    this.filteredMovies = this.movies.filter(
+      (movie) =>
+        (!selectedCategories.length ||
+          selectedCategories.some((cat) =>
+            movie.categories.some((c) => c.name === cat.name),
+          )) &&
+        (!this.searchValue ||
+          movie.title.toLowerCase().includes(this.searchValue.toLowerCase())),
+    );
   }
 
   onSearchValueChange(searchValue: string): void {
@@ -92,6 +92,13 @@ export class MovieComponent implements OnInit {
 
   deleteMovieRequest(movie: Movie): void {
     this.store.dispatch(MovieActions.deleteMovie({ movieId: movie.id }));
+  }
+
+  clearDeletedCategory(category: Category): void {
+    this.movieCategories = this.movieCategories.filter(
+      (cat) => cat.id !== category.id,
+    );
+    this.applyFilters();
   }
 
   getCategoryNames(movie: Movie): string {

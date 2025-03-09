@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { CategoryEditComponent } from '../category-edit/category-edit.component';
-import { Category } from '../shared/models/category.model';
+import { Category, CategoryToEdit } from '../shared/models/category.model';
 import * as CategoryActions from '../store/actions/category.actions';
 import { AppState } from '../store/app.state';
 import {
@@ -18,7 +18,8 @@ import {
   styleUrl: './category.component.scss',
 })
 export class CategoryComponent {
-  @Output() applyChipsEvent = new EventEmitter<Category[]>();
+  @Output() applyChipsEvent = new EventEmitter<Category>();
+  @Output() deleteChipEvent = new EventEmitter<Category>();
   selectedCategories: Category[] = [];
 
   categories$: Observable<Category[]>;
@@ -35,14 +36,7 @@ export class CategoryComponent {
 
   selectChip(event: MatChipSelectionChange, category: Category): void {
     const updatedCategory = { ...category, selected: event.selected };
-    if (event.selected) {
-      this.selectedCategories = [...this.selectedCategories, updatedCategory];
-    } else {
-      this.selectedCategories = this.selectedCategories.filter(
-        (cat) => cat.id !== category.id,
-      );
-    }
-    this.applyChipsEvent.emit(this.selectedCategories);
+    this.applyChipsEvent.emit(updatedCategory);
   }
 
   trackByCategoryId(index: number, category: Category): string {
@@ -58,5 +52,21 @@ export class CategoryComponent {
   }
   deleteCategory(category: Category): void {
     this.store.dispatch(CategoryActions.deleteCategory({ id: category.id }));
+    this.deleteChipEvent.emit(category);
+  }
+  addDummyCategories(): void {
+    const category1: CategoryToEdit = {
+      name: '1',
+    };
+    const category2: CategoryToEdit = {
+      name: '2',
+    };
+    const category3: CategoryToEdit = {
+      name: '3',
+    };
+    const categories = [category1, category2, category3];
+    categories.forEach((category) => {
+      this.store.dispatch(CategoryActions.createCategory({ category }));
+    });
   }
 }
