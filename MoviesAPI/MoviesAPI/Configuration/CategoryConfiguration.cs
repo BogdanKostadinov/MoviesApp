@@ -14,6 +14,12 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         .IsRequired()
         .HasMaxLength(100);
 
+    builder.Property(m => m.DateCreated)
+    .IsRequired();
+
+    builder.Property(m => m.LastModified)
+        .IsRequired();
+
     builder.HasMany(m => m.Movies)
         .WithMany(m => m.Categories)
         .UsingEntity<MovieCategory>(

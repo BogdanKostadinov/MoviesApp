@@ -73,6 +73,8 @@ public class CategoryController : ControllerBase
     {
       var category = _mapper.Map<Category>(newCategory);
       category.Id = Guid.NewGuid();
+      category.DateCreated = DateTime.UtcNow;
+      category.LastModified = DateTime.UtcNow;
 
       // Retrieve existing movies from the database
       var movies = await _context.Movies
