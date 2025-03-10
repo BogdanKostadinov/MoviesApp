@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { Movie, MovieToEdit } from '../models/movie.model';
 
 @Injectable({
@@ -12,9 +12,16 @@ export class MovieService {
   constructor(private http: HttpClient) {}
 
   getMovies(): Observable<Movie[]> {
-    return this.http
-      .get<Movie[]>(`${this.url}`)
-      .pipe(catchError(this.handleError));
+    return this.http.get<Movie[]>(`${this.url}`).pipe(
+      map((movies) =>
+        movies.sort(
+          (a, b) =>
+            new Date(b.dateCreated).getTime() -
+            new Date(a.dateCreated).getTime(),
+        ),
+      ),
+      catchError(this.handleError),
+    );
   }
 
   getMovie(id: string): Observable<Movie> {
