@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import { CategoryService } from '../../shared/services/category.service';
 import * as CategoryActions from '../actions/category.actions';
+import * as MovieActions from '../actions/movie.actions';
 
 @Injectable()
 export class CategoryEffects {
@@ -112,7 +113,10 @@ export class CategoryEffects {
   deleteCategorySuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CategoryActions.deleteCategorySuccess),
-      map(() => CategoryActions.getCategories()),
+      mergeMap(() => [
+        CategoryActions.getCategories(),
+        MovieActions.loadMovies(),
+      ]),
     ),
   );
 }
