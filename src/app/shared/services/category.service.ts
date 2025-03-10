@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { Category, CategoryToEdit } from '../models/category.model';
 
 @Injectable({
@@ -12,9 +12,16 @@ export class CategoryService {
   constructor(private http: HttpClient) {}
 
   getCategories(): Observable<Category[]> {
-    return this.http
-      .get<Category[]>(this.url)
-      .pipe(catchError(this.handleError));
+    return this.http.get<Category[]>(this.url).pipe(
+      map((categories) =>
+        categories.sort(
+          (a, b) =>
+            new Date(b.dateCreated).getTime() -
+            new Date(a.dateCreated).getTime(),
+        ),
+      ),
+      catchError(this.handleError),
+    );
   }
 
   getCategory(id: string): Observable<Category> {
