@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MoviesAPI.Models;
 
-public class Movie
+public class Movie : AuditableEntity
 {
   [Key]
   public Guid Id { get; set; }

@@ -1,6 +1,8 @@
+using MoviesAPI.Models;
+
 namespace MoviesAPI.DTOs;
 
-public class MovieDTO
+public class MovieDTO : AuditableEntity
 {
   public Guid Id { get; set; }
   public required string Title { get; set; }

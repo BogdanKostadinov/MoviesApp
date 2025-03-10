@@ -1,7 +1,5 @@
-using Azure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.Extensions.Hosting;
 using MoviesAPI.Models;
 
 namespace MoviesAPI.Configuration;
@@ -19,6 +17,12 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         .IsRequired();
 
     builder.Property(m => m.Director)
+        .IsRequired();
+
+    builder.Property(m => m.DateCreated)
+        .IsRequired();
+
+    builder.Property(m => m.LastModified)
         .IsRequired();
 
     builder.HasMany(m => m.Categories)

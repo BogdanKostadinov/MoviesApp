@@ -17,6 +17,8 @@ public class MovieData
                 Title = "Inception",
                 ReleaseYear = 2010,
                 Director = "Christopher Nolan",
+                DateCreated = new DateTime(2023, 1, 1),
+                LastModified = new DateTime(2023, 1, 1)
             },
             new Movie
             {
@@ -24,6 +26,8 @@ public class MovieData
                 Title = "The Matrix",
                 ReleaseYear = 1999,
                 Director = "Lana Wachowski, Lilly Wachowski",
+                DateCreated = new DateTime(2023, 1, 1),
+                LastModified = new DateTime(2023, 1, 1)
             }
         };
   }

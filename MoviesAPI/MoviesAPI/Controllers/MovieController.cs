@@ -70,6 +70,8 @@ public class MovieController : ControllerBase
     {
       var movie = _mapper.Map<Movie>(newMovie);
       movie.Id = Guid.NewGuid();
+      movie.DateCreated = DateTime.UtcNow;
+      movie.LastModified = DateTime.UtcNow;
 
       // Retrieve existing categories from the database
       var categories = await _context.Categories
@@ -128,6 +130,7 @@ public class MovieController : ControllerBase
 
     // Map the updated DTO back to the movie entity
     _mapper.Map(movieDTO, movie);
+    movie.LastModified = DateTime.UtcNow;
 
     // Clear existing categories and add the updated ones
     movie.Categories.Clear();
