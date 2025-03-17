@@ -11,6 +11,7 @@ public class DataContext : DbContext
   {}
   public DbSet<Movie> Movies { get; set; }
   public DbSet<Category> Categories { get; set; }
+  public DbSet<User> Users { get; set; }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
@@ -18,6 +19,7 @@ public class DataContext : DbContext
 
     modelBuilder.ApplyConfiguration(new MovieConfiguration());
     modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+    modelBuilder.ApplyConfiguration(new UserConfiguration());
 
     modelBuilder.Seed();
   }
@@ -29,6 +31,7 @@ public static class DataSeeder
   {
     var movies = MovieData.SeedMovies();
     var categories = CategoryData.SeedCategories();
+    var users = UserData.SeedUsers();
 
     if (movies is not null)
     {
@@ -37,8 +40,10 @@ public static class DataSeeder
     if (categories is not null)
     {
       modelBuilder.Entity<Category>().HasData(categories);
-
     }
-
+    if (users is not null)
+    {
+      modelBuilder.Entity<User>().HasData(users);
+    }
   }
 }
