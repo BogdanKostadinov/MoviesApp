@@ -18,6 +18,7 @@ import { MaterialModule } from './shared/modules/material.module';
 import { reducers } from './store/app.state';
 import { CategoryEffects } from './store/effects/category.effects';
 import { MovieEffects } from './store/effects/movie.effects';
+import { LoginPageComponent } from './login-page/login-page.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { MovieEffects } from './store/effects/movie.effects';
     SeachBarComponent,
     SelectWithSearchComponent,
     CategoryEditComponent,
+    LoginPageComponent,
   ],
   imports: [
     BrowserAnimationsModule,

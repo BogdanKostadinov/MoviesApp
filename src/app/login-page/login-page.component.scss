@@ -1,0 +1,40 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #ece9e6, #ffffff);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.full-width {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.login-button {
+  margin-top: 1.5rem;
+  height: 48px;
+  font-weight: bold;
+}
+
+.forgot-password {
+  text-align: center;
+  margin-top: 1rem;
+
+  a {
+    text-decoration: none;
+    color: #3f51b5;
+    font-size: 14px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

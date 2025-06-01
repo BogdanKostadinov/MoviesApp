@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CategoryEditComponent } from './category-edit/category-edit.component';
+import { LoginPageComponent } from './login-page/login-page.component';
 import { MovieEditComponent } from './movie-edit/movie-edit.component';
 import { MovieComponent } from './movie/movie.component';
-import { CategoryEditComponent } from './category-edit/category-edit.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'movies',
     component: MovieComponent,
+  },
+  {
+    path: 'login',
+    component: LoginPageComponent,
   },
   { path: '**', component: MovieComponent },
 ];
