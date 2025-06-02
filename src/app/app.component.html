@@ -1,4 +1,4 @@
-<app-toolbar></app-toolbar>
+<app-toolbar *ngIf="!isLoginPage"></app-toolbar>
 
 <div class="content-container">
   <router-outlet></router-outlet>
