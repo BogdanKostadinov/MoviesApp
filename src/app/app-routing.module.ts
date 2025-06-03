@@ -4,6 +4,7 @@ import { CategoryEditComponent } from './category-edit/category-edit.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { MovieEditComponent } from './movie-edit/movie-edit.component';
 import { MovieComponent } from './movie/movie.component';
+import { RegisterPageComponent } from './register-page/register-page.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginPageComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterPageComponent,
   },
   { path: '**', component: MovieComponent },
 ];

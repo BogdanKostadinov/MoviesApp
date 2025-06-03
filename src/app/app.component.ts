@@ -23,7 +23,9 @@ export class AppComponent implements OnInit {
         ),
       )
       .subscribe((event: NavigationEnd) => {
-        this.isLoginPage = event.urlAfterRedirects === '/login';
+        this.isLoginPage =
+          event.urlAfterRedirects === '/login' ||
+          event.urlAfterRedirects === '/register';
       });
   }
 }
