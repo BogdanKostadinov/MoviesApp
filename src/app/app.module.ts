@@ -19,6 +19,7 @@ import { reducers } from './store/app.state';
 import { CategoryEffects } from './store/effects/category.effects';
 import { MovieEffects } from './store/effects/movie.effects';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { RegisterPageComponent } from './register-page/register-page.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
     SelectWithSearchComponent,
     CategoryEditComponent,
     LoginPageComponent,
+    RegisterPageComponent,
   ],
   imports: [
     BrowserAnimationsModule,
